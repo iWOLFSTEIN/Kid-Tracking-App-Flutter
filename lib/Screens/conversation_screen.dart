@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kids_tracking_app/Constants/networking_objects.dart';
+import 'package:kids_tracking_app/Utils/alerts.dart';
 import 'package:kids_tracking_app/Widgets/message_container.dart';
 
-import '../ResponsiveDesign/dimensions.dart';
+import '../Utils/dimensions.dart';
 
 class ConversationScreen extends StatefulWidget {
   ConversationScreen({Key? key}) : super(key: key);
@@ -45,7 +47,6 @@ class _ConversationScreenState extends State<ConversationScreen> {
                     width: width(context),
                     isSender: (i % 2 == 0) ? true : false,
                   ),
-                
               ],
             ),
           ),
@@ -125,34 +126,29 @@ class _ConversationScreenState extends State<ConversationScreen> {
                 SizedBox(width: 10),
                 InkWell(
                   onTap: () async {
-                    // // try {
-                    // //   if (messageText.text != null &&
-                    // //       messageText.text != '') {
-                    // //     var message = messageText.text;
-                    // //     messageText.text = '';
+                    try {
+                      if (messageText.text != '') {
+                        var message = messageText.text;
+                        messageText.text = '';
 
-                    // //     await backendServices.sendMessage(
-                    // //       senderEmail: _auth.currentUser.email,
-                    // //       receiverEmail: widget.userData['email'],
-                    // //       messageText: message,
-                    // //       imageAdress: '',
-                    // //     );
+                        bool isMessageSent =
+                            await firebaseChatRelatedServices.sendMessage(
+                          receiverEmail: firebaseAuth.currentUser!.email,
+                          messageText: message,
+                          imageAdress: '',
+                        );
 
-                    // //     backendServices.updateConversationEmail(
-                    // //       senderEmail: _auth.currentUser.email,
-                    // //       receiverEmail: widget.userData['email'],
-                    // //       lastMessage: message,
-                    // //     );
-                    // //     // if (messageSent) {}
-                    // //   }
-                    // } catch (e) {
-                    //   // CoolAlert.show(
-                    //   //     context: context,
-                    //   //     type: CoolAlertType.error,
-                    //   //     text: 'An error occured.'
-                    //   //     //  e.toString()
-                    //   //     );
-                    // }
+                        if (isMessageSent) {
+                          firebaseChatRelatedServices.updateLastMessage(
+                            receiverEmail: firebaseAuth.currentUser!.email,
+                            lastMessage: message,
+                          );
+                        }
+                      }
+                    } catch (e) {
+                      print(e.toString());
+                      errorAlert(context);
+                    }
                   },
                   child: Icon(Icons.send_rounded,
                       size: 30, color: Color(0xFF15354E)),

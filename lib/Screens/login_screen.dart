@@ -2,9 +2,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:kids_tracking_app/ResponsiveDesign/dimensions.dart';
+import 'package:kids_tracking_app/Utils/dimensions.dart';
 import 'package:kids_tracking_app/Screens/controller_screen.dart';
-import 'package:kids_tracking_app/Constants/constants.dart';
+import 'package:kids_tracking_app/Constants/networking_objects.dart';
+import 'package:kids_tracking_app/Utils/alerts.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -110,6 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                       } catch (e) {
                         print(e.toString());
+                        errorAlert(context);
                       }
                     },
                     style: ElevatedButton.styleFrom(

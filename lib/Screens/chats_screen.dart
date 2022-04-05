@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:kids_tracking_app/Screens/conversation_screen.dart';
 
-import '../ResponsiveDesign/dimensions.dart';
+import '../Utils/dimensions.dart';
 import '../Widgets/chat_element.dart';
 
 class ChatsScreen extends StatefulWidget {

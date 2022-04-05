@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:kids_tracking_app/Constants/constants.dart';
+import 'package:kids_tracking_app/Constants/networking_objects.dart';
 
 class GoogleSignInServies {
   final GoogleSignIn googleSignIn = GoogleSignIn();

@@ -1,4 +1,4 @@
-import 'package:kids_tracking_app/Constants/constants.dart';
+import 'package:kids_tracking_app/Constants/networking_objects.dart';
 
 class FirebaseChatRelatedServices {
   sendMessage({var receiverEmail, var messageText, var imageAdress}) async {
@@ -39,9 +39,9 @@ class FirebaseChatRelatedServices {
     return sent;
   }
   updateLastMessage(
-      {var senderEmail, var receiverEmail, var lastMessage}) async {
+      { var receiverEmail, var lastMessage}) async {
     var time = DateTime.now();
-
+    var senderEmail = firebaseAuth.currentUser!.email;
     var currentTime = time;
     await firebaseFirestore
         .collection('Messages')

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../ResponsiveDesign/dimensions.dart';
+import '../Utils/dimensions.dart';
 
 
 class ChatElement extends StatelessWidget {
