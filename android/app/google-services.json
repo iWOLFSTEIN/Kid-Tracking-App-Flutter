@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1063614854533",
+    "project_id": "kids-tracking-app",
+    "storage_bucket": "kids-tracking-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063614854533:android:43a74b666497e6df4240ec",
+        "android_client_info": {
+          "package_name": "com.example.kids_tracking_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063614854533-0ab8aua6on3uruocuiem5rm0fdc3rdel.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kids_tracking_app",
+            "certificate_hash": "7bcbbb1cdad41cd00a4c9c03b5eb9453d8e0e3ef"
+          }
+        },
+        {
+          "client_id": "1063614854533-8ncoqg17du38us2up0pg3u2ekfih9m5k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1e5OYY7L-IPdlw3Fkm1Arnwv1SX5acy0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063614854533-8ncoqg17du38us2up0pg3u2ekfih9m5k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
