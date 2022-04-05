@@ -38,7 +38,22 @@ class FirebaseChatRelatedServices {
 
     return sent;
   }
-  updateLastMessage(
+
+
+ updateLastMessage({message, chatPartner}) async {
+   
+    if (message != null) {
+      await firebaseFirestore
+          .collection('LastMessage')
+          .doc(firebaseAuth.currentUser!.email)
+          .collection('AllChatsLastMessages')
+          .doc(chatPartner)
+          .set({'lastMessage': message});
+    }
+  }
+
+
+  updateLastMessageSenderEmail(
       { var receiverEmail, var lastMessage}) async {
     var time = DateTime.now();
     var senderEmail = firebaseAuth.currentUser!.email;
