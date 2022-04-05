@@ -1,12 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/networking_objects.dart';
 import 'package:kids_tracking_app/Utils/alerts.dart';
+import 'package:kids_tracking_app/Widgets/chat_element.dart';
 import 'package:kids_tracking_app/Widgets/message_container.dart';
 
 import '../Utils/dimensions.dart';
 
 class ConversationScreen extends StatefulWidget {
-  ConversationScreen({Key? key}) : super(key: key);
+  ConversationScreen(
+      {Key? key, this.conversationEmail = "idamiengrey@gmail.com"})
+      : super(key: key);
+
+  final conversationEmail;
 
   @override
   State<ConversationScreen> createState() => _ConversationScreenState();
@@ -31,25 +37,68 @@ class _ConversationScreenState extends State<ConversationScreen> {
       ),
       body: Column(
         children: [
-          Expanded(
-            child: ListView(
-              reverse: true,
-              padding: EdgeInsets.symmetric(
-                  horizontal: width(context) * 4 / 100,
-                  vertical: height(context) * 2.5 / 100),
-              children: [
-                for (int i = 0; i < 20; i++)
-                  MessageContainer(
-                    text:
-                        "Hello World, There was an idea to bring to gether a group of remarkable people",
-                    sender: "Talha",
-                    height: height(context),
-                    width: width(context),
-                    isSender: (i % 2 == 0) ? true : false,
+          StreamBuilder<QuerySnapshot>(
+              stream: firebaseFirestore
+                  .collection('Messages')
+                  .doc(firebaseAuth.currentUser!.email)
+                  .collection('AllMessages')
+                  .doc(widget.conversationEmail)
+                  .collection('Conversation')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Expanded(
+                    child: Container(
+                        child: Center(
+                            child: Padding(
+                      padding: EdgeInsets.only(top: height(context) * 2 / 100),
+                      child: Text(
+                        'Loading...',
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.4),
+                        ),
+                      ),
+                    ))),
+                  );
+                }
+
+                var messages = snapshot.data!.docs as List;
+                List<MessageContainer> messageWidget = [];
+                var counter = 0;
+                for (var message in messages) {
+                  final sender = message.data()['sender'];
+                  final text = message.data()['message'];
+                  final imageAdress = message.data()['imageAdress'];
+
+                  messageWidget.add(MessageContainer(
+                      text: text,
+                      sender: sender,
+                      height: height(context),
+                      width: width(context),
+                      imageAdress: imageAdress,
+                      isSender: sender == firebaseAuth.currentUser!.email
+                          ? true
+                          : false));
+                  if (counter == 0) {
+                    firebaseChatRelatedServices.updateLastMessage(
+                      message: text,
+                      chatPartner: widget.conversationEmail,
+                    );
+                  }
+                  counter++;
+                }
+
+                return Expanded(
+                  child: ListView(
+                    reverse: true,
+                    padding: EdgeInsets.symmetric(
+                        horizontal: width(context) * 4 / 100,
+                        vertical: height(context) * 2.5 / 100),
+                    children: messageWidget,
                   ),
-              ],
-            ),
-          ),
+                );
+              }),
           Padding(
             padding: EdgeInsets.only(
               bottom: 6,
@@ -133,14 +182,15 @@ class _ConversationScreenState extends State<ConversationScreen> {
 
                         bool isMessageSent =
                             await firebaseChatRelatedServices.sendMessage(
-                          receiverEmail: firebaseAuth.currentUser!.email,
+                          receiverEmail: widget.conversationEmail,
                           messageText: message,
                           imageAdress: '',
                         );
 
                         if (isMessageSent) {
-                          firebaseChatRelatedServices.updateLastMessage(
-                            receiverEmail: firebaseAuth.currentUser!.email,
+                          firebaseChatRelatedServices
+                              .updateLastMessageSenderEmail(
+                            receiverEmail: widget.conversationEmail,
                             lastMessage: message,
                           );
                         }
