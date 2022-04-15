@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:kids_tracking_app/Utils/dimensions.dart';
-import 'package:kids_tracking_app/Screens/controller_screen.dart';
-import 'package:kids_tracking_app/Constants/networking_objects.dart';
+import 'package:kids_tracking_app/Screens/home_screen.dart';
+import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Utils/alerts.dart';
 
 class LoginScreen extends StatefulWidget {

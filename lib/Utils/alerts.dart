@@ -1,4 +1,4 @@
 import 'package:cool_alert/cool_alert.dart';
 
-errorAlert(context) => CoolAlert.show(
-    context: context, type: CoolAlertType.error, text: 'An error occured.');
+errorAlert(context, {errorMessage='An error occured.'}) => CoolAlert.show(
+    context: context, type: CoolAlertType.error, text: errorMessage);

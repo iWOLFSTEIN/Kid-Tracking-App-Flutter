@@ -1,4 +1,4 @@
-import 'package:kids_tracking_app/Constants/networking_objects.dart';
+import 'package:kids_tracking_app/Constants/network_objects.dart';
 
 class FirebaseChatRelatedServices {
   sendMessage({var receiverEmail, var messageText, var imageAdress}) async {
