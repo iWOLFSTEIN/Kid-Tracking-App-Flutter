@@ -15,12 +15,17 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  var heading_style = GoogleFonts.montserrat(
-    textStyle: TextStyle(
-        fontWeight: FontWeight.w600,
-        fontSize: 30,
-        color: Colors.black.withOpacity(0.8)),
-  );
+  var heading_style =
+      // GoogleFonts.montserrat(
+      //   textStyle:
+      TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 30,
+    color: Colors.black.withOpacity(0.8),
+  )
+      //       ,
+      // )
+      ;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,10 +93,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 children: [
                   Text(
                     "Child Tracking App allows you to track your kids on the Google Map. Parents can track their kids and see their realtime locations. Kids can chat to parents and send an SOS alert in case of emergency.",
-                    style: GoogleFonts.montserrat(
-                      textStyle: TextStyle(
-                          fontSize: 18, color: Colors.black.withOpacity(0.4)),
-                    ),
+                    style:
+                        // GoogleFonts.montserrat(
+                        //   textStyle:
+                        TextStyle(
+                            fontSize: 18, color: Colors.black.withOpacity(0.4)),
+                    // ),
                   )
                 ],
               ),
@@ -122,8 +129,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         Expanded(child: Container()),
                         Image.asset(
                           "images/google_logo.png",
-                          height: 25,
-                          width: 25,
+                          height: 23,
+                          width: 23,
                         ),
                         // Expanded(child: Container()),
                         Container(
@@ -131,11 +138,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         Text(
                           "Continue with Google",
-                          style: GoogleFonts.montserrat(
-                            textStyle:
-                                TextStyle(fontSize: 19, color: Colors.white),
-                          ),
+                          style:
+                              // GoogleFonts.montserrat(
+                              //   textStyle:
+                              TextStyle(fontSize: 17.5, color: Colors.white),
                         ),
+                        // ),
                         Container(
                           width: width(context) * 2 / 100,
                         ),
