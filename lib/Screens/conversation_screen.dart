@@ -114,14 +114,16 @@ class _ConversationScreenState extends State<ConversationScreen> {
                   child: Container(
                     width: double.infinity,
                     decoration: BoxDecoration(
-                        color: Color(0xFF14213D),
+                        color: Color(0xFFE5E5E5),
+                        border:
+                            Border.all(color: Colors.black.withOpacity(0.1)),
                         borderRadius: BorderRadius.circular(50)),
                     child: TextField(
                       controller: messageText,
                       keyboardType: TextInputType.multiline,
                       maxLines: 3,
                       minLines: 1,
-                      style: textStyle.copyWith(color: Colors.white),
+                      style: textStyle.copyWith(color: Colors.black),
                       autocorrect: false,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -134,7 +136,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
                         contentPadding:
                             EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                         hintStyle: textStyle.copyWith(
-                          color: Colors.white.withOpacity(0.6),
+                          color: Colors.black.withOpacity(0.4),
                         ),
                         // prefixIcon: IconButton(
                         //   icon: Icon(Icons.image),
@@ -200,8 +202,8 @@ class _ConversationScreenState extends State<ConversationScreen> {
                       errorAlert(context);
                     }
                   },
-                  child: Icon(Icons.send_rounded,
-                      size: 30, color: Color(0xFF15354E)),
+                  child:
+                      Icon(Icons.send_rounded, size: 30, color: Colors.black),
                 ),
                 SizedBox(width: 10),
               ],

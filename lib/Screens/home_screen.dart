@@ -47,6 +47,8 @@ class _ControllerScreenState extends State<ControllerScreen> {
         children: [TrackScreen(), ChatsScreen()],
       ),
       bottomNavigationBar: CustomNavigationBar(
+          selectedColor: Color(0xFF68B3DF),
+          strokeColor: Color(0xFF68B3DF),
           elevation: 16,
           currentIndex: pageIndex,
           onTap: (index) {

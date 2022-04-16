@@ -77,7 +77,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
                           fontSize: 14, color: Colors.black.withOpacity(0.4)),
                     ),
                     newMessageIndicator: CircleAvatar(
-                      backgroundColor: Colors.green.shade400,
+                      backgroundColor:
+                          // Color(0xFFFCA311),
+                          Colors.green.shade400,
                       radius: 8,
                       child: Center(
                         child: Text(
@@ -179,4 +181,3 @@ class _ChatsScreenState extends State<ChatsScreen> {
     );
   }
 }
-

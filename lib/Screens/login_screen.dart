@@ -102,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   )
                 ],
               ),
+              SizedBox(),
               Container(
                 height: 50,
                 child: ElevatedButton(
@@ -121,9 +122,9 @@ class _LoginScreenState extends State<LoginScreen> {
                         errorAlert(context);
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF14213D),
-                    ),
+                    style: ElevatedButton.styleFrom(primary: Colors.black
+                        // Color(0xFF14213D),
+                        ),
                     child: Row(
                       children: [
                         Expanded(child: Container()),

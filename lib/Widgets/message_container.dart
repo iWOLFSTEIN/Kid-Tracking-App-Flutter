@@ -117,7 +117,8 @@ class MessageContainer extends StatelessWidget {
                   bottom: height * .5 / 100,
                   left: width * 10 / 100),
           child: Material(
-            color: isSender ? Color(0xFFE5E5E5) : Color(0xFF14213D),
+            color: isSender ? Color(0xFFE5E5E5) : Color(0xFF68B3DF),
+            //   Color(0xFF14213D),
             elevation: 0,
             borderRadius: isSender
                 ? BorderRadius.only(
@@ -137,14 +138,23 @@ class MessageContainer extends StatelessWidget {
                   Text(
                     "$text",
                     style: TextStyle(
-                      color: isSender ? Color(0xFF14213D) : Colors.white,
+                      color: isSender
+                          ?
+
+                          //  Color(0xFF14213D)
+                          Color(0xFF68B3DF)
+                          : Colors.white,
                     ),
                   ),
                   SizedBox(height: height * .5 / 100),
                   Text(
                     'sent  ✓',
                     style: TextStyle(
-                        color: isSender ? Color(0xFF14213D) : Colors.white,
+                        color: isSender
+                            ?
+                            //  Color(0xFF14213D)
+                            Colors.black
+                            : Colors.white,
                         fontSize: ((width + height) / 4) * 4 / 100),
                   ),
                 ],

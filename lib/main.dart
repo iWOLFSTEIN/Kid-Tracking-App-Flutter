@@ -73,11 +73,9 @@ class MyApp extends StatelessWidget {
         // textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
         primarySwatch: Colors.blue,
       ),
-      home:
-       (firebaseAuth.currentUser != null)
+      home: (firebaseAuth.currentUser != null)
           ? ControllerScreen()
-          : 
-          LoginScreen(),
+          : LoginScreen(),
     );
   }
 }
