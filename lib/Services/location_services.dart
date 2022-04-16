@@ -19,7 +19,7 @@ getLocation() async {
                     .collection("Coordinates")
                     .doc("usercoordinates")
                     .set({"latitude": currentLocation.latitude,
-                      "longitude": currentLocation.latitude
+                      "longitude": currentLocation.longitude,
                     });
               } catch (e) {
                 print("generating error..");

@@ -4,6 +4,7 @@ import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/chats_screen.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:kids_tracking_app/Screens/map_screen.dart';
+import 'package:kids_tracking_app/Screens/track_screen.dart';
 import 'package:kids_tracking_app/Services/location_services.dart';
 
 class ControllerScreen extends StatefulWidget {
@@ -34,7 +35,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.black,
       body: PageView(
         scrollDirection: Axis.horizontal,
         controller: controller,
@@ -43,10 +44,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
             pageIndex = index;
           });
         },
-        children: [
-         MapScreen(),
-          ChatsScreen()
-        ],
+        children: [TrackScreen(), ChatsScreen()],
       ),
       bottomNavigationBar: CustomNavigationBar(
           elevation: 16,

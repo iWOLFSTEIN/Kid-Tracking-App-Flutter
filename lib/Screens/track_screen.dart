@@ -23,10 +23,10 @@ class _TrackScreenState extends State<TrackScreen> {
                 color: Colors.blue,
                 child: TextButton(
                     onPressed: () {
-                      Navigator.pushAndRemoveUntil(context,
+                      Navigator.push(context,
                           MaterialPageRoute(builder: (context) {
                         return MapScreen();
-                      }), (route) => false);
+                      }));
                       // googleSignInServices.signOutGoogle();
                     },
                     child: Text(
