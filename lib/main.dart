@@ -41,8 +41,6 @@ void main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
 //   await Firebase.initializeApp();
 
-  
-  
 // }
 // getLocationData(){
 //   Timer.periodic(Duration(milliseconds: 300), (timer) async {
@@ -72,12 +70,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
+        // textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
         primarySwatch: Colors.blue,
       ),
-      home: (firebaseAuth.currentUser != null)
+      home:
+       (firebaseAuth.currentUser != null)
           ? ControllerScreen()
-          : LoginScreen(),
+          : 
+          LoginScreen(),
     );
   }
 }

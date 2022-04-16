@@ -35,7 +35,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: PageView(
         scrollDirection: Axis.horizontal,
         controller: controller,
