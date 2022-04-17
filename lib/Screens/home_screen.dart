@@ -5,6 +5,7 @@ import 'package:kids_tracking_app/Screens/chats_screen.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:kids_tracking_app/Screens/map_screen.dart';
 import 'package:kids_tracking_app/Screens/track_screen.dart';
+import 'package:kids_tracking_app/Services/Firebase/firebase_create_user.dart';
 import 'package:kids_tracking_app/Services/location_services.dart';
 
 class ControllerScreen extends StatefulWidget {

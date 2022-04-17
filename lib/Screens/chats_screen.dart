@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/conversation_screen.dart';
 
 import '../Utils/dimensions.dart';
@@ -13,109 +15,9 @@ class ChatsScreen extends StatefulWidget {
 }
 
 class _ChatsScreenState extends State<ChatsScreen> {
-  List<Widget> chatsList = [
-    for (int i = 0; i < 5; i++)
-      Builder(builder: (context) {
-        return
-            //  Column(
-            //   children: [
-            //     Slidable(
-            //       key: GlobalKey(),
-            //       endActionPane: ActionPane(motion: ScrollMotion(),
-            //           // dismissible: DismissiblePane(onDismissed: () {
-            //           //   // setState(() {
-            //           //   //   chatsList.removeAt(i);
-            //           //   // });
-            //           // }),
-            //           children: [
-            //             SlidableAction(
-            //               onPressed: (context) {},
-            //               backgroundColor:
-            //                   //Colors.blue,
-            //                   // Color(0xFF21B7CA),
-            //                   Colors.white,
-            //               foregroundColor: Color(0xFF21B7CA),
-            //               icon: Icons.block,
-            //               label: 'Block',
-            //             ),
-            //             SlidableAction(
-            //               onPressed: (context) {},
-            //               backgroundColor: Colors.white,
-            //               foregroundColor: Colors.red,
-            //               icon: Icons.delete,
-            //               label: 'Delete',
-            //             ),
-            //           ]),
-            //       child:
-            Padding(
-          padding: const EdgeInsets.symmetric(vertical: 0),
-          child: Container(
-            // width: width(context),
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-            decoration: BoxDecoration(
-                // color: Color(0xFFDAE9E4),
-                // borderRadius: BorderRadius.all(Radius.circular(20))
-                ),
-            child: InkWell(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                  return ConversationScreen();
-                }));
-              },
-              child: Row(
-                children: [
-                  ChatElement(
-                    sellerName: 'Talha Ashraf',
-                    bottomCredential: 'This is a dummy message',
-                    profilePic: null,
-                    avatarRadius: 23.0,
-                    heightBetween: height(context) * 0.9 / 100,
-                    nameWeight: FontWeight.w400,
-                    newMessageTime: Text(
-                      '09:12 AM',
-                      style: TextStyle(
-                          fontSize: 14, color: Colors.black.withOpacity(0.4)),
-                    ),
-                    newMessageIndicator: CircleAvatar(
-                      backgroundColor:
-                          // Color(0xFFFCA311),
-                          Colors.green.shade400,
-                      radius: 8,
-                      child: Center(
-                        child: Text(
-                          '1',
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ),
-                    nameFontSize: 17.5,
-                    credentialFontSize: 15.5,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        )
-            //     ),
-            //     Divider(
-            //       // key: Key(i.toString()),
-            //       height: 0,
-            //       thickness: 1,
-            //     )
-            //   ],
-            // )
-            ;
-      })
-  ];
   final animatedListStateKey = GlobalKey<AnimatedListState>();
   @override
   Widget build(BuildContext context) {
-    // chatsList = [
-
-    // ];
-
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -134,50 +36,127 @@ class _ChatsScreenState extends State<ChatsScreen> {
           //     ),
           //   ),
           // ),
-          AnimatedList(
-              key: animatedListStateKey,
-              initialItemCount: chatsList.length,
-              itemBuilder: (context, index, animation) {
-                return Column(
-                  children: [
-                    Slidable(
-                        key: GlobalKey(),
-                        endActionPane: ActionPane(
-                            motion: ScrollMotion(),
-                            dismissible: DismissiblePane(onDismissed: () {
-                              chatsList.removeAt(index);
-                              AnimatedList.of(context).removeItem(
-                                  index,
-                                  (context, animation) =>
-                                      chatsList.elementAt(index));
-                            }),
-                            children: [
-                              // SlidableAction(
-                              //   onPressed: (context) {},
-                              //   backgroundColor:
+          StreamBuilder<QuerySnapshot>(
+              stream: firebaseFirestore
+                  .collection('Messages')
+                  .doc(firebaseAuth.currentUser!.email)
+                  .collection('AllMessages')
+                  .orderBy('timestamp', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Container(
+                    child: Center(
+                        child: Text(
+                      'Loading chats...',
+                      style: TextStyle(
+                        color: Colors.black.withOpacity(0.4),
+                      ),
+                    )),
+                  );
+                }
 
-                              //       Colors.white,
-                              //   foregroundColor: Color(0xFF21B7CA),
-                              //   icon: Icons.block,
-                              //   label: 'Block',
-                              // ),
-                              SlidableAction(
-                                onPressed: (context) {},
-                                backgroundColor: Colors.white,
-                                foregroundColor: Colors.red,
-                                icon: Icons.delete,
-                                label: 'Delete',
+                var chatsList = [];
+                var querySnapshot = snapshot.data!.docs;
+                for (var i in querySnapshot) {
+                  var widget =
+                      //  Builder(builder: (context) {
+                      //   return
+                      Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 13, vertical: 4),
+                    child: StreamBuilder<DocumentSnapshot>(
+                        stream: firebaseFirestore
+                            .collection('Messages')
+                            .doc(firebaseAuth.currentUser!.email)
+                            .collection('AllMessages')
+                            .doc(i.id)
+                            .snapshots(),
+                        builder: (context, snapshot) {
+                          if (!snapshot.hasData) {
+                            return Center(
+                              child: Text(""),
+                            );
+                          }
+                          var documentSnapshot = snapshot.data!.data() as Map;
+                          return ListTile(
+                              onTap: () {
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return ConversationScreen(
+                                    conversationEmail: i.id,
+                                    name: "Adam",
+                                  );
+                                }));
+                              },
+                              leading: CircleAvatar(
+                                radius: 21,
+                                backgroundColor: Color(0xFF68B3DF),
                               ),
-                            ]),
-                        child: chatsList.elementAt(index)),
-                    // Divider(
-                    //   // key: Key(i.toString()),
-                    //   height: 0,
-                    //   thickness: 1,
-                    // )
-                  ],
-                );
+                              title: Text(i.id),
+                              subtitle: Text(documentSnapshot["lastMessage"]),
+                              trailing: CircleAvatar(
+                                backgroundColor: Colors.green.shade200,
+                                radius: 8,
+                                child: Center(
+                                  child: Text(
+                                    '1',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                ),
+                              ));
+                        }),
+                  );
+                  // });
+                  chatsList.add(widget);
+                }
+
+                return AnimatedList(
+                    key: animatedListStateKey,
+                    initialItemCount: chatsList.length,
+                    itemBuilder: (context, index, animation) {
+                      return Column(
+                        children: [
+                          Slidable(
+                              key: GlobalKey(),
+                              endActionPane: actionPane(),
+                              startActionPane: actionPane(),
+                              child: chatsList.elementAt(index)),
+                        ],
+                      );
+                    });
               }),
     );
+  }
+
+  ActionPane actionPane() {
+    return ActionPane(dragDismissible: false, motion: ScrollMotion(),
+        // dismissible: DismissiblePane(onDismissed: () {
+        //   // chatsList.removeAt(index);
+        //   // AnimatedList.of(context).removeItem(
+        //   //     index,
+        //   //     (context, animation) =>
+        //   //         chatsList.elementAt(index));
+        // }),
+        children: [
+          // SlidableAction(
+          //   onPressed: (context) {},
+          //   backgroundColor:
+
+          //       Colors.white,
+          //   foregroundColor: Color(0xFF21B7CA),
+          //   icon: Icons.block,
+          //   label: 'Block',
+          // ),
+          SlidableAction(
+            onPressed: (context) {},
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.red,
+            icon: Icons.delete,
+            label: 'Delete',
+          ),
+        ]);
   }
 }

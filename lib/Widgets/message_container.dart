@@ -23,6 +23,10 @@ class MessageContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // DateTime dateTime = DateTime.now();
+    // String time = (dateTime.hour ~/ 12 == 0)
+    //     ? "${dateTime.hour}:${dateTime.minute} am"
+    //     : "${dateTime.hour % 12}:${dateTime.minute} pm";
     if (!(imageAdress == null || imageAdress == '')) {
       return Column(
         crossAxisAlignment:
@@ -140,15 +144,14 @@ class MessageContainer extends StatelessWidget {
                     style: TextStyle(
                       color: isSender
                           ?
-
                           //  Color(0xFF14213D)
-                          Color(0xFF68B3DF)
+                          Colors.black
                           : Colors.white,
                     ),
                   ),
                   SizedBox(height: height * .5 / 100),
                   Text(
-                    'sent  ✓',
+                    (isSender) ? 'sent' : "received",
                     style: TextStyle(
                         color: isSender
                             ?

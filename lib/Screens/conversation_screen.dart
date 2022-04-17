@@ -8,11 +8,13 @@ import 'package:kids_tracking_app/Widgets/message_container.dart';
 import '../Utils/dimensions.dart';
 
 class ConversationScreen extends StatefulWidget {
-  ConversationScreen(
-      {Key? key, this.conversationEmail = "idamiengrey@gmail.com"})
-      : super(key: key);
+  ConversationScreen({
+    Key? key,
+    this.conversationEmail, this.name,
+  }) : super(key: key);
 
   final conversationEmail;
+  final name;
 
   @override
   State<ConversationScreen> createState() => _ConversationScreenState();
@@ -30,7 +32,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
           color: Colors.black, //change your color here
         ),
         title: Text(
-          "Adam",
+         widget.name,
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -80,12 +82,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
                       isSender: sender == firebaseAuth.currentUser!.email
                           ? true
                           : false));
-                  if (counter == 0) {
-                    firebaseChatRelatedServices.updateLastMessage(
-                      message: text,
-                      chatPartner: widget.conversationEmail,
-                    );
-                  }
+                  // if (counter == 0) {
+                  //   firebaseChatRelatedServices.updateLastMessage(
+                  //     message: text,
+                  //     chatPartner: widget.conversationEmail,
+                  //   );
+                  // }
                   counter++;
                 }
 

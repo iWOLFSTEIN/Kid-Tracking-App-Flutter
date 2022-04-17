@@ -36,6 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              // SizedBox(),
               Align(
                 alignment: Alignment.centerLeft,
                 child: Column(
@@ -102,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   )
                 ],
               ),
-              SizedBox(),
+              // SizedBox(),
               Container(
                 height: 50,
                 child: ElevatedButton(
