@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/conversation_screen.dart';
+import 'package:kids_tracking_app/Widgets/app_drawer.dart';
 
 import '../Utils/dimensions.dart';
-import '../Widgets/chat_element.dart';
+// import '../Widgets/chat_element.dart';
 
 class ChatsScreen extends StatefulWidget {
   ChatsScreen({Key? key}) : super(key: key);
@@ -20,6 +21,9 @@ class _ChatsScreenState extends State<ChatsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: Colors.black, //change your color here
+        ),
         title: Text(
           'Chats',
           style: TextStyle(color: Colors.black),
@@ -128,6 +132,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
                       );
                     });
               }),
+      drawer: AppDrawer(),
     );
   }
 

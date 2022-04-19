@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Utils/alerts.dart';
-import 'package:kids_tracking_app/Widgets/chat_element.dart';
+// import 'package:kids_tracking_app/Widgets/chat_element.dart';
 import 'package:kids_tracking_app/Widgets/message_container.dart';
 
 import '../Utils/dimensions.dart';

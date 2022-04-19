@@ -21,7 +21,7 @@ class GoogleSignInServies {
 
     if (authResult.additionalUserInfo!.isNewUser) {
       // databaseServices.createUser(email: authResult.user!.email);
-    await createUser(
+      await createUser(
           userEmail: authResult.user!.email,
           name: authResult.user!.displayName,
           profilePic: authResult.user!.photoURL);
