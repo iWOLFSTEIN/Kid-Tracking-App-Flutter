@@ -4,10 +4,15 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 
 class MapScreen extends StatefulWidget {
-  MapScreen({Key? key, this.latitude, this.longitude}) : super(key: key);
+  MapScreen({
+    Key? key,
+    //  this.latitude, this.longitude
+    this.userEmail,
+  }) : super(key: key);
 
-  var latitude;
-  var longitude;
+  // var latitude;
+  // var longitude;
+  var userEmail;
 
   @override
   State<MapScreen> createState() => _MapScreenState();
@@ -59,7 +64,7 @@ class _MapScreenState extends State<MapScreen> {
         body: StreamBuilder<DocumentSnapshot>(
             stream: firebaseFirestore
                 .collection("Coordinates")
-                .doc("usercoordinates")
+                .doc(widget.userEmail)
                 .snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
@@ -79,7 +84,6 @@ class _MapScreenState extends State<MapScreen> {
 
               return GoogleMap(
                 mapType: MapType.normal,
-              
                 markers: {
                   Marker(
                       position: LatLng(latitude, longitude),

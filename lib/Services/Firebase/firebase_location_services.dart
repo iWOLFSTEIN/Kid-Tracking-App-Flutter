@@ -10,8 +10,9 @@ updateUserLocationToFirebase({required currentLocation}) async{
             "longitude": currentLocation.longitude,
           });
         } catch (e) {
-          print("generating error..");
+          print("generating error from updateUserLocationToFirebase method");
           print(e.toString());
         }
 
 }
+

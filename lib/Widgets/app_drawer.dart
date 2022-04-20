@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
+import 'package:kids_tracking_app/Screens/requests_screen.dart';
+import 'package:kids_tracking_app/Screens/tracking_users_screen.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
@@ -116,6 +118,9 @@ class AppDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return RequestsScreen();
+              }));
             },
           ),
           ListTile(
@@ -129,6 +134,9 @@ class AppDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return TrackingUserScreen();
+              }));
             },
           ),
           Padding(

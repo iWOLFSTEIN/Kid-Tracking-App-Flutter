@@ -18,6 +18,7 @@ class _TrackScreenState extends State<TrackScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
           iconTheme: IconThemeData(
             color: Colors.black, //change your color here
@@ -141,9 +142,6 @@ class _TrackScreenState extends State<TrackScreen> {
             ),
           ),
         ),
-        drawer:
-            AppDrawer()
-        );
+        drawer: AppDrawer());
   }
 }
-

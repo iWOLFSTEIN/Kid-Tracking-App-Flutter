@@ -1,5 +1,5 @@
 import 'package:flutter/services.dart';
-import 'package:kids_tracking_app/Services/Firebase/firebase_location_update.dart';
+import 'package:kids_tracking_app/Services/Firebase/firebase_location_services.dart';
 import 'package:kids_tracking_app/Services/permission_handler.dart';
 import 'package:location/location.dart' as loc;
 import 'package:kids_tracking_app/Constants/network_objects.dart';

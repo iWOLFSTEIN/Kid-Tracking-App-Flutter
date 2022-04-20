@@ -92,31 +92,8 @@ class _RequestTrackAccessScreenState extends State<RequestTrackAccessScreen> {
                           }
                           List<Widget> userList = [];
                           for (var i in snapshot.data!.docs) {
-                            // bool isAccessGranted = false;
-                            // bool isRequestSent = false;
                             if (i.id != firebaseAuth.currentUser!.email) {
                               var documentSnapshot = i.data() as Map;
-
-                              // try {
-                              //   firebaseFirestore
-                              //       .collection("AccessRequests")
-                              //       .doc(i.id)
-                              //       .collection("Requests")
-                              //       .doc(firebaseAuth.currentUser!.email)
-                              //       .get()
-                              //       .then((value) {
-                              //     var documentSnapshot1 = value.data()! as Map;
-                              //     // setState(() {
-                              //     isAccessGranted =
-                              //         documentSnapshot1["isAccessGranted"];
-                              //     isRequestSent = true;
-                              //     // });
-                              //   });
-                              // } catch (e) {
-                              //   print(e.toString());
-                              // }
-                              // print(isRequestSent);
-                              // print(isAccessGranted);
 
                               var widget = ListTile(
                                 leading: CircleAvatar(
@@ -126,8 +103,16 @@ class _RequestTrackAccessScreenState extends State<RequestTrackAccessScreen> {
                                   backgroundImage: CachedNetworkImageProvider(
                                       documentSnapshot["profilePic"]),
                                 ),
-                                title: Text(documentSnapshot["name"]),
-                                subtitle: Text(i.id),
+                                title: Wrap(
+                                  children: [
+                                    Text(documentSnapshot["name"]),
+                                  ],
+                                ),
+                                subtitle: Wrap(
+                                  children: [
+                                    Text(i.id),
+                                  ],
+                                ),
                                 trailing: StreamBuilder<QuerySnapshot>(
                                     stream: firebaseFirestore
                                         .collection("AccessRequests")
@@ -167,11 +152,13 @@ class _RequestTrackAccessScreenState extends State<RequestTrackAccessScreen> {
                                                   borderRadius:
                                                       BorderRadius.all(
                                                           Radius.circular(5))),
-                                              child: Text(
-                                                "Granted",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12),
+                                              child: Center(
+                                                child: Text(
+                                                  "Granted",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12),
+                                                ),
                                               ));
                                         } else {
                                           widget = Container(
@@ -186,6 +173,8 @@ class _RequestTrackAccessScreenState extends State<RequestTrackAccessScreen> {
                                                   onPressed: () async {
                                                     await deleteRequest(
                                                       requestTo: i.id,
+                                                      requestFrom: firebaseAuth
+                                                          .currentUser!.email,
                                                     );
                                                     // setState(() {});
                                                   },
@@ -205,54 +194,22 @@ class _RequestTrackAccessScreenState extends State<RequestTrackAccessScreen> {
                                           height: 32.5,
                                           width: 72.5,
                                           decoration: BoxDecoration(
-                                              color:
-                                                  //  (isRequestSent)
-                                                  //     ? (isAccessGranted)
-                                                  //         ? Colors.green.shade200
-                                                  //         : Colors.grey
-                                                  //     :
-
-                                                  Color(0xFF68B3DF),
+                                              color: Color(0xFF68B3DF),
                                               borderRadius: BorderRadius.all(
                                                   Radius.circular(5))),
-                                          child:
-                                              // (isRequestSent)
-                                              //     ? (isAccessGranted)
-                                              //         ? Center(
-                                              //             child: Text(
-                                              //               "Granted",
-                                              //               style: TextStyle(
-                                              //                   color: Colors.white,
-                                              //                   fontSize: 12),
-                                              //             ),
-                                              //           )
-                                              //         : TextButton(
-                                              //             onPressed: () async {
-                                              //               await deleteRequest(
-                                              //                   requestTo: i.id);
-                                              //             },
-                                              //             child: Text(
-                                              //               "Sent",
-                                              //               style: TextStyle(
-                                              //                   color: Colors.white,
-                                              //                   fontSize: 12),
-                                              //             ),
-                                              //           )
-                                              //     :
-
-                                              TextButton(
-                                                  onPressed: () async {
-                                                    await requestAccess(
-                                                      requestTo: i.id,
-                                                    );
-                                                    // setState(() {});
-                                                  },
-                                                  child: Text(
-                                                    "Request",
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 12),
-                                                  )));
+                                          child: TextButton(
+                                              onPressed: () async {
+                                                await requestAccess(
+                                                  requestTo: i.id,
+                                                );
+                                                // setState(() {});
+                                              },
+                                              child: Text(
+                                                "Request",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12),
+                                              )));
                                     }),
                               );
                               userList.add(widget);
