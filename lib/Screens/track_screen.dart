@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/map_screen.dart';
@@ -65,33 +66,12 @@ class _TrackScreenState extends State<TrackScreen> {
                   height: 15,
                 ),
                 Container(
-                  // height: 80,
                   width: double.infinity,
                   decoration: BoxDecoration(
                       color: Colors.black,
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: TextButton(
                       onPressed: () async {
-                        // var latitude;
-                        // var longitude;
-                        // await firebaseFirestore
-                        //     .collection("Coordinates")
-                        //     .doc("usercoordinates")
-                        //     .get()
-                        //     .then((value) {
-                        //   var snapshot = value.data()! as Map;
-                        //   latitude = snapshot["latitude"];
-                        //   longitude = snapshot["longitude"];
-                        // });
-
-                        // if (!(latitude == null || longitude == null))
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //   return MapScreen(
-
-                        //       );
-                        // }));
-
                         Navigator.push(context,
                             MaterialPageRoute(builder: (context) {
                           return RequestTrackAccessScreen();
@@ -128,16 +108,88 @@ class _TrackScreenState extends State<TrackScreen> {
                 SizedBox(
                   height: 15,
                 ),
-                ListTile(
-                  onTap: () {},
-                  leading: CircleAvatar(
-                    radius: 21,
-                    backgroundColor: Color(0xFF68B3DF),
-                  ),
-                  title: Text("Dummy User"),
-                  subtitle: Text("34.3492023, 23.234983"),
-                  trailing: Icon(Icons.location_on_outlined),
-                )
+                StreamBuilder<QuerySnapshot>(
+                    stream: firebaseFirestore
+                        .collection("Tracking")
+                        .doc(firebaseAuth.currentUser!.email)
+                        .collection("Users")
+                        .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return Container(
+                          child: Text(
+                            "Loading...",
+                            style:
+                                TextStyle(color: Colors.black.withOpacity(0.4)),
+                          ),
+                        );
+                      }
+                      List<Widget> widgetList = [];
+                      for (var i in snapshot.data!.docs) {
+                        var documentSnapshot = i.data() as Map;
+
+                        String? userEmail;
+
+                        try {
+                          userEmail = documentSnapshot["email"];
+                        } catch (e) {
+                          print(e.toString());
+                          continue;
+                        }
+                        if (userEmail != null) {
+                          var widget = ListTile(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return MapScreen(
+                                  userEmail: i.id,
+                                );
+                              }));
+                            },
+                            leading: CircleAvatar(
+                              radius: 21,
+                              backgroundColor: Colors.white.withOpacity(0.0),
+                              backgroundImage: CachedNetworkImageProvider(
+                                  documentSnapshot["profilePic"]),
+                            ),
+                            title: Wrap(
+                              children: [
+                                Text(documentSnapshot["name"]),
+                              ],
+                            ),
+                            subtitle: StreamBuilder<DocumentSnapshot>(
+                                stream: firebaseFirestore
+                                    .collection("Coordinates")
+                                    .doc(i.id)
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (!snapshot.hasData) {
+                                    return Text("0, 0");
+                                  }
+                                  var documentSnapshot =
+                                      snapshot.data!.data() as Map;
+                                  return Text(
+                                      "${documentSnapshot["latitude"]}, ${documentSnapshot["longitude"]}");
+                                }),
+                            trailing: Icon(Icons.location_on_outlined),
+                          );
+                          widgetList.add(widget);
+                        }
+                      }
+                      if (listEquals(widgetList, [])) {
+                        return Container(
+                          child: Center(
+                              child: Text(
+                            "No Data Available",
+                            style:
+                                TextStyle(color: Colors.black.withOpacity(0.4)),
+                          )),
+                        );
+                      }
+                      return Column(
+                        children: widgetList,
+                      );
+                    })
               ],
             ),
           ),

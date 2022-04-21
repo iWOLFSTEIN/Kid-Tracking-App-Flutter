@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
@@ -116,7 +117,15 @@ class _ChatsScreenState extends State<ChatsScreen> {
                   // });
                   chatsList.add(widget);
                 }
-
+                if (listEquals(chatsList, [])) {
+                  return Container(
+                    child: Center(
+                        child: Text(
+                      "No Chats Available",
+                      style: TextStyle(color: Colors.black.withOpacity(0.4)),
+                    )),
+                  );
+                }
                 return AnimatedList(
                     key: animatedListStateKey,
                     initialItemCount: chatsList.length,

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/map_screen.dart';
@@ -97,6 +98,15 @@ class _TrackingUserScreenState extends State<TrackingUserScreen> {
 
                 widgetList.add(widget);
               }
+            }
+            if (listEquals(widgetList, [])) {
+              return Container(
+                child: Center(
+                    child: Text(
+                  "No Data Available",
+                  style: TextStyle(color: Colors.black.withOpacity(0.4)),
+                )),
+              );
             }
             return Column(
               children: widgetList,

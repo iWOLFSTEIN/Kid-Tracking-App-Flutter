@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_request_access_related_services.dart';
@@ -44,17 +45,17 @@ class _RequestsScreenState extends State<RequestsScreen>
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Text(
-                  "Requests",
+                  "Connected",
                   style: TextStyle(fontSize: 18),
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 12),
                 child: Text(
-                  "Connected",
+                  "Requests",
                   style: TextStyle(fontSize: 18),
                 ),
-              )
+              ),
             ]),
       ),
       body: StreamBuilder<QuerySnapshot>(
@@ -195,12 +196,28 @@ class _RequestsScreenState extends State<RequestsScreen>
             }
 
             return TabBarView(controller: tabController, children: [
-              Column(
-                children: requestsWidgets,
-              ),
-              Column(
-                children: connectedWidgets,
-              ),
+              (listEquals(connectedWidgets, []))
+                  ? Container(
+                      child: Center(
+                          child: Text(
+                        "No Data Available",
+                        style: TextStyle(color: Colors.black.withOpacity(0.4)),
+                      )),
+                    )
+                  : Column(
+                      children: connectedWidgets,
+                    ),
+              (listEquals(requestsWidgets, []))
+                  ? Container(
+                      child: Center(
+                          child: Text(
+                        "No Data Available",
+                        style: TextStyle(color: Colors.black.withOpacity(0.4)),
+                      )),
+                    )
+                  : Column(
+                      children: requestsWidgets,
+                    ),
             ]);
           }),
     );

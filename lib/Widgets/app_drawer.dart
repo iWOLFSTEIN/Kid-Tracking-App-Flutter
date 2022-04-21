@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:kids_tracking_app/Screens/requests_screen.dart';
 import 'package:kids_tracking_app/Screens/tracking_users_screen.dart';
+import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({
@@ -57,37 +59,103 @@ class AppDrawer extends StatelessWidget {
                         ],
                       ),
                       Container(),
-                      Row(
-                        children: [
-                          Text(
-                            "12 ",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Tracking",
-                            style:
-                                TextStyle(color: Colors.white.withOpacity(0.6)),
-                          ),
-                          SizedBox(
-                            width: 15,
-                          ),
-                          Text(
-                            "0 ",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            "Trackers",
-                            style:
-                                TextStyle(color: Colors.white.withOpacity(0.6)),
-                          ),
-                        ],
-                      ),
+                      StreamBuilder2<QuerySnapshot, QuerySnapshot>(
+                          streams: Tuple2(
+                              firebaseFirestore
+                                  .collection("Tracking")
+                                  .doc(firebaseAuth.currentUser!.email)
+                                  .collection("Users")
+                                  .snapshots(),
+                              firebaseFirestore
+                                  .collection("AccessRequests")
+                                  .doc(firebaseAuth.currentUser!.email)
+                                  .collection("Requests")
+                                  .where("isAccessGranted", isEqualTo: true)
+                                  .snapshots()),
+                          builder: (context, snapshot) {
+                            var trackingCount;
+                            if (snapshot.item1.hasData) {
+                              trackingCount = 0;
+                              for (var i in snapshot.item1.data!.docs) {
+                                if (i.id.contains("@")) {
+                                  trackingCount++;
+                                }
+                              }
+                            }
+                            var trackerCount;
+                            if (snapshot.item1.hasData) {
+                              trackerCount = 0;
+                              for (var i in snapshot.item1.data!.docs) {
+                                if (i.id.contains("@")) {
+                                  trackerCount++;
+                                }
+                              }
+                            }
+
+                            return Row(
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return TrackingUserScreen();
+                                    }));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        (trackingCount == null)
+                                            ? "0 "
+                                            : "$trackingCount ",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "Tracking",
+                                        style: TextStyle(
+                                            color:
+                                                Colors.white.withOpacity(0.6)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 15,
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Navigator.push(context,
+                                        MaterialPageRoute(builder: (context) {
+                                      return RequestsScreen();
+                                    }));
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        (trackerCount == null)
+                                            ? "0 "
+                                            : "$trackerCount ",
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Text(
+                                        "Trackers",
+                                        style: TextStyle(
+                                            color:
+                                                Colors.white.withOpacity(0.6)),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            );
+                          }),
                       Container(),
                       Container(),
                     ],
