@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
+import 'package:kids_tracking_app/Utils/alerts.dart';
 
 class FirebaseChatRelatedServices {
   sendMessage({var receiverEmail, var messageText, var imageAdress}) async {
@@ -7,7 +9,7 @@ class FirebaseChatRelatedServices {
     var time = DateTime.now();
 
     var currentTime = time;
-
+    // try {
     await firebaseFirestore
         .collection('Messages')
         .doc(senderEmail)
@@ -35,13 +37,15 @@ class FirebaseChatRelatedServices {
         sent = true;
       });
     });
+    // } catch (e) {
+    //   print("error is generated from send message method...");
+    //   print(e.toString());
+    // }
 
     return sent;
   }
 
-
- updateLastMessage({message, chatPartner}) async {
-   
+  updateLastMessage({message, chatPartner}) async {
     if (message != null) {
       await firebaseFirestore
           .collection('LastMessage')
@@ -52,9 +56,7 @@ class FirebaseChatRelatedServices {
     }
   }
 
-
-  updateLastMessageSenderEmail(
-      { var receiverEmail, var lastMessage}) async {
+  updateLastMessageSenderEmail({var receiverEmail, var lastMessage}) async {
     var time = DateTime.now();
     var senderEmail = firebaseAuth.currentUser!.email;
     var currentTime = time;
@@ -81,5 +83,56 @@ class FirebaseChatRelatedServices {
         // (lastMessage == '') ? 'sent a picture' : lastMessage,
       });
     });
+  }
+
+  deleteAllChats() async {
+    try {
+      await firebaseFirestore
+          .collection('Messages')
+          .doc(firebaseAuth.currentUser!.email)
+          .collection('AllMessages')
+          .orderBy('timestamp', descending: true)
+          .get()
+          .then((value) async {
+        for (var data in value.docs) {
+          await firebaseFirestore
+              .collection('Messages')
+              .doc(firebaseAuth.currentUser!.email)
+              .collection('AllMessages')
+              .doc(data.data()['sentTo'])
+              .collection('Conversation')
+              .get()
+              .then((snapshot) {
+            for (DocumentSnapshot ds in snapshot.docs) {
+              ds.reference.delete();
+            }
+          });
+        }
+        await firebaseFirestore
+            .collection('LastMessage')
+            .doc(firebaseAuth.currentUser!.email)
+            .collection('AllChatsLastMessages')
+            .get()
+            .then((snapshot) {
+          for (DocumentSnapshot ds in snapshot.docs) {
+            ds.reference.delete();
+          }
+        });
+      }).whenComplete(() async {
+        await firebaseFirestore
+            .collection('Messages')
+            .doc(firebaseAuth.currentUser!.email)
+            .collection('AllMessages')
+            .get()
+            .then((snapshot) {
+          for (DocumentSnapshot ds in snapshot.docs) {
+            ds.reference.delete();
+          }
+        });
+      });
+    } catch (e) {
+      print("Error is occurred in deleteAllChats method");
+      print(e.toString());
+    }
   }
 }

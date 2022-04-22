@@ -14,7 +14,10 @@ class TrackScreen extends StatefulWidget {
   State<TrackScreen> createState() => _TrackScreenState();
 }
 
-class _TrackScreenState extends State<TrackScreen> {
+class _TrackScreenState extends State<TrackScreen> with AutomaticKeepAliveClientMixin<TrackScreen>{
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
   var textStyle = TextStyle();
   @override
   Widget build(BuildContext context) {

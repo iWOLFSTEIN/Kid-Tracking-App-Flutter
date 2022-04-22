@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "1063614854533",
-    "project_id": "kids-tracking-app",
-    "storage_bucket": "kids-tracking-app.appspot.com"
+    "project_number": "505142498637",
+    "project_id": "kids-location-tracking-app",
+    "storage_bucket": "kids-location-tracking-app.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1063614854533:android:43a74b666497e6df4240ec",
+        "mobilesdk_app_id": "1:505142498637:android:2d4e012adbcbf0979d1304",
         "android_client_info": {
-          "package_name": "com.example.kids_tracking_app"
+          "package_name": "com.olamibode.kids_tracking_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1063614854533-0ab8aua6on3uruocuiem5rm0fdc3rdel.apps.googleusercontent.com",
+          "client_id": "505142498637-6b6lr7dbd99fp0bfvgf1civu2m91fi7v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.kids_tracking_app",
+            "package_name": "com.olamibode.kids_tracking_app",
             "certificate_hash": "7bcbbb1cdad41cd00a4c9c03b5eb9453d8e0e3ef"
           }
         },
         {
-          "client_id": "1063614854533-8ncoqg17du38us2up0pg3u2ekfih9m5k.apps.googleusercontent.com",
+          "client_id": "505142498637-fsm194nt7hef15rmqt0am9ir0g7v3eor.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC1e5OYY7L-IPdlw3Fkm1Arnwv1SX5acy0"
+          "current_key": "AIzaSyBqw4gB-p_CONDecK2hyQ8v96Dfl2_ekRs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1063614854533-8ncoqg17du38us2up0pg3u2ekfih9m5k.apps.googleusercontent.com",
+              "client_id": "505142498637-fsm194nt7hef15rmqt0am9ir0g7v3eor.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

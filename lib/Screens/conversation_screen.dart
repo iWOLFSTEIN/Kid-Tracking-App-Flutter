@@ -10,7 +10,8 @@ import '../Utils/dimensions.dart';
 class ConversationScreen extends StatefulWidget {
   ConversationScreen({
     Key? key,
-    this.conversationEmail, this.name,
+    this.conversationEmail,
+    this.name,
   }) : super(key: key);
 
   final conversationEmail;
@@ -24,6 +25,13 @@ class _ConversationScreenState extends State<ConversationScreen> {
   TextEditingController messageText = TextEditingController();
   var textStyle = TextStyle();
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // print(widget.name);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
@@ -32,7 +40,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
           color: Colors.black, //change your color here
         ),
         title: Text(
-         widget.name,
+          widget.name,
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
@@ -82,12 +90,12 @@ class _ConversationScreenState extends State<ConversationScreen> {
                       isSender: sender == firebaseAuth.currentUser!.email
                           ? true
                           : false));
-                  // if (counter == 0) {
-                  //   firebaseChatRelatedServices.updateLastMessage(
-                  //     message: text,
-                  //     chatPartner: widget.conversationEmail,
-                  //   );
-                  // }
+                  if (counter == 0) {
+                    firebaseChatRelatedServices.updateLastMessage(
+                      message: text,
+                      chatPartner: widget.conversationEmail,
+                    );
+                  }
                   counter++;
                 }
 
@@ -183,14 +191,16 @@ class _ConversationScreenState extends State<ConversationScreen> {
                       if (messageText.text != '') {
                         var message = messageText.text;
                         messageText.text = '';
-
+                        // print("sending message...");
+                        // print(message);
                         bool isMessageSent =
                             await firebaseChatRelatedServices.sendMessage(
                           receiverEmail: widget.conversationEmail,
                           messageText: message,
                           imageAdress: '',
                         );
-
+                        // print(isMessageSent);
+                        // print("message status...");
                         if (isMessageSent) {
                           firebaseChatRelatedServices
                               .updateLastMessageSenderEmail(
@@ -198,8 +208,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
                             lastMessage: message,
                           );
                         }
+                        // print("message sent...");
                       }
                     } catch (e) {
+                      print(
+                          "generating error while clicking send message button...");
                       print(e.toString());
                       errorAlert(context);
                     }

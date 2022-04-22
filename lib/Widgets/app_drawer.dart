@@ -83,9 +83,9 @@ class AppDrawer extends StatelessWidget {
                               }
                             }
                             var trackerCount;
-                            if (snapshot.item1.hasData) {
+                            if (snapshot.item2.hasData) {
                               trackerCount = 0;
-                              for (var i in snapshot.item1.data!.docs) {
+                              for (var i in snapshot.item2.data!.docs) {
                                 if (i.id.contains("@")) {
                                   trackerCount++;
                                 }

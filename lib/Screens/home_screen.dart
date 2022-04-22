@@ -23,7 +23,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getLocation();
+    // getLocation();
   }
 
   @override
