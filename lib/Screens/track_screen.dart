@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/map_screen.dart';
 import 'package:kids_tracking_app/Screens/request_track_access_screen.dart';
+import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 import 'package:kids_tracking_app/Widgets/app_drawer.dart';
 
 class TrackScreen extends StatefulWidget {
@@ -14,7 +15,8 @@ class TrackScreen extends StatefulWidget {
   State<TrackScreen> createState() => _TrackScreenState();
 }
 
-class _TrackScreenState extends State<TrackScreen> with AutomaticKeepAliveClientMixin<TrackScreen>{
+class _TrackScreenState extends State<TrackScreen>
+    with AutomaticKeepAliveClientMixin<TrackScreen> {
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -75,10 +77,17 @@ class _TrackScreenState extends State<TrackScreen> with AutomaticKeepAliveClient
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: TextButton(
                       onPressed: () async {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) {
-                          return RequestTrackAccessScreen();
-                        }));
+                        // Navigator.push(context,
+                        //     MaterialPageRoute(builder: (context) {
+                        //   return RequestTrackAccessScreen();
+                        // }));
+                        //  await onActionSelected("subscribe");
+                        var receiverToken = await getDeviceTokenFromFirebase(
+                            // userEmail: firebaseAuth.currentUser!.email
+                            // userEmail: "idamiengrey@gmail.com"
+                            userEmail: "ikenprime@gmail.com");
+
+                        await sendPushMessage(receiverToken: receiverToken);
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(

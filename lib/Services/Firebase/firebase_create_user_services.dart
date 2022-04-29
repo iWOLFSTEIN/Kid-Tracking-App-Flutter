@@ -1,4 +1,5 @@
 import 'package:kids_tracking_app/Constants/network_objects.dart';
+import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 
 createUser({
   required userEmail,
@@ -13,6 +14,7 @@ createUser({
     });
     await createRequestCollection(userEmail: userEmail);
     await createTrackingCollection(userEmail: userEmail);
+    await uploadDeviceTokenToFirebase(userEmail: userEmail);
   } catch (e) {
     print("generating error from create user method");
     print(e.toString());

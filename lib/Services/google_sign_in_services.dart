@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_create_user_services.dart';
+import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 
 class GoogleSignInServies {
   final GoogleSignIn googleSignIn = GoogleSignIn();
@@ -25,6 +26,9 @@ class GoogleSignInServies {
           userEmail: authResult.user!.email,
           name: authResult.user!.displayName,
           profilePic: authResult.user!.photoURL);
+    }
+    else{
+      uploadDeviceTokenToFirebase(userEmail: authResult.user!.email);
     }
 
     final User? user = authResult.user;

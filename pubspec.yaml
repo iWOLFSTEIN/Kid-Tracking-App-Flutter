@@ -48,6 +48,9 @@ dependencies:
   permission_handler: ^9.2.0
   multiple_stream_builder: ^2.0.0
   modal_progress_hud_nsn: ^0.1.0-nullsafety-1
+  firebase_messaging: ^11.2.14
+  flutter_local_notifications: ^9.4.1
+  http: ^0.13.4
   # flutter_background_service: ^2.0.0
 
 dev_dependencies:
