@@ -83,9 +83,11 @@ class _TrackScreenState extends State<TrackScreen>
                         // }));
                         //  await onActionSelected("subscribe");
                         var receiverToken = await getDeviceTokenFromFirebase(
-                            // userEmail: firebaseAuth.currentUser!.email
+                            userEmail: firebaseAuth.currentUser!.email
                             // userEmail: "idamiengrey@gmail.com"
-                            userEmail: "ikenprime@gmail.com");
+                            // userEmail: "ikenprime@gmail.com"
+
+                            );
 
                         await sendPushMessage(receiverToken: receiverToken);
                       },

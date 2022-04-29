@@ -98,26 +98,19 @@ FirebaseMessaging messaging = FirebaseMessaging.instance;
 //   });
 // }
 
-class MyApp extends StatefulWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    FirebaseMessaging.instance
-        .getInitialMessage()
-        .then((RemoteMessage? message) {
-      print("payload received");
-      if (message != null) {}
-    });
+onForegroundNotification() {
+//  FirebaseMessaging.instance
+//         .getInitialMessage()
+//         .then((RemoteMessage? message) {
+//       print("payload received");
+//       if (message != null) {}
+//     });
+  try {
     var initialzationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
+        AndroidInitializationSettings(
+          'ic_launcher'
+          // '@mipmap/ic_launcher'
+          );
     var initializationSettings =
         InitializationSettings(android: initialzationSettingsAndroid);
 
@@ -135,20 +128,32 @@ class _MyAppState extends State<MyApp> {
               android: AndroidNotificationDetails(
                 channel!.id,
                 channel!.name,
-                // channel!.description,
-                // TODO add a proper drawable resource to android, for now using
-                //      one that already exists in example app.
                 icon: 'ic_launcher',
               ),
             ));
       }
     });
+  } catch (e) {
+    print("generating error in onForegroundNotification Method");
+    print(e.toString());
+  }
+}
 
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    onForegroundNotification();
     uploadDeviceTokenToFirebase();
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
