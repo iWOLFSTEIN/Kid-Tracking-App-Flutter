@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 import 'package:kids_tracking_app/Utils/alerts.dart';
+import 'package:kids_tracking_app/Utils/notifications.dart';
 // import 'package:kids_tracking_app/Widgets/chat_element.dart';
 import 'package:kids_tracking_app/Widgets/message_container.dart';
 
@@ -32,17 +33,7 @@ class _ConversationScreenState extends State<ConversationScreen> {
     // print(widget.name);
   }
 
-  sendMessageNotification({required name, required email}) async {
-    var receiverToken = await getDeviceTokenFromFirebase(userEmail: email);
-    if (receiverToken == null) {
-      print('Unable to send FCM message, no token exists.');
-      return;
-    }
-    var fcmPayload = constructFCMPayload(receiverToken,
-        title: name, body: "sent you a message", data: {'isMessage': true});
-
-    await sendPushMessage(fcmPayload: fcmPayload);
-  }
+  
 
   @override
   Widget build(BuildContext context) {

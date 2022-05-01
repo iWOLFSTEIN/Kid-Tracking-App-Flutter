@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_request_access_related_services.dart';
+import 'package:kids_tracking_app/Utils/notifications.dart';
 
 class RequestsScreen extends StatefulWidget {
   RequestsScreen({Key? key}) : super(key: key);
@@ -24,19 +25,7 @@ class _RequestsScreenState extends State<RequestsScreen>
     tabController = TabController(length: 2, vsync: this);
   }
 
-  sendAcceptedTrackRequestNotification({required name, required email}) async {
-    var receiverToken = await getDeviceTokenFromFirebase(userEmail: email);
-    if (receiverToken == null) {
-      print('Unable to send FCM message, no token exists.');
-      return;
-    }
-    var fcmPayload = constructFCMPayload(receiverToken,
-        title: "Request Accepted",
-        body: "$name accepted your track request",
-        data: {'isMessage': false});
-
-    await sendPushMessage(fcmPayload: fcmPayload);
-  }
+  
 
   @override
   Widget build(BuildContext context) {
