@@ -5,12 +5,14 @@ import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:kids_tracking_app/Screens/requests_screen.dart';
 import 'package:kids_tracking_app/Screens/tracking_users_screen.dart';
+import 'package:kids_tracking_app/Utils/alerts.dart';
+import 'package:kids_tracking_app/Utils/notifications.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
 
 class AppDrawer extends StatelessWidget {
-  const AppDrawer({
-    Key? key,
-  }) : super(key: key);
+  AppDrawer({Key? key, this.scaffoldKey}) : super(key: key);
+
+  var scaffoldKey;
 
   @override
   Widget build(BuildContext context) {
@@ -171,8 +173,29 @@ class AppDrawer extends StatelessWidget {
               "Send SOS Alert",
               style: TextStyle(fontSize: 17, color: Colors.black),
             ),
-            onTap: () {
+            onTap: () async {
               Navigator.pop(context);
+
+              try {
+                await firebaseFirestore
+                    .collection('AccessRequests')
+                    .doc(firebaseAuth.currentUser!.email)
+                    .collection('Requests')
+                    .where('isAccessGranted', isEqualTo: true)
+                    .get()
+                    .then((value) async {
+                  for (var i in value.docs) {
+                    await sendSOSAlertNotification(
+                        senderName: firebaseAuth.currentUser!.displayName,
+                        receiverEmail: i.id,
+                        senderEmail: firebaseAuth.currentUser!.email);
+                  }
+                });
+                successAlert(scaffoldKey.currentContext);
+              } catch (e) {
+                print('generating error while sending sos alert');
+                print(e.toString());
+              }
             },
           ),
           ListTile(

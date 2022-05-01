@@ -17,6 +17,9 @@ class TrackScreen extends StatefulWidget {
 
 class _TrackScreenState extends State<TrackScreen>
     with AutomaticKeepAliveClientMixin<TrackScreen> {
+   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+ 
+
   @override
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
@@ -25,6 +28,7 @@ class _TrackScreenState extends State<TrackScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        key: _scaffoldKey,
         backgroundColor: Colors.white,
         appBar: AppBar(
           iconTheme: IconThemeData(
@@ -214,6 +218,6 @@ class _TrackScreenState extends State<TrackScreen>
             ),
           ),
         ),
-        drawer: AppDrawer());
+        drawer: AppDrawer(scaffoldKey: _scaffoldKey,));
   }
 }

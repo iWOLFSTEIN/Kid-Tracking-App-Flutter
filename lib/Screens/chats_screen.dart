@@ -33,7 +33,7 @@ class _ChatsScreenState extends State<ChatsScreen>
     super.initState();
     // Future.delayed(Duration.zero, () {});
   }
-
+final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     // var dataProvider = Provider.of<DataProvider>(context);
@@ -51,6 +51,7 @@ class _ChatsScreenState extends State<ChatsScreen>
         ],
       ),
       child: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           iconTheme: IconThemeData(
             color: Colors.black, //change your color here
@@ -311,7 +312,7 @@ class _ChatsScreenState extends State<ChatsScreen>
                         );
                       });
                 }),
-        drawer: AppDrawer(),
+        drawer: AppDrawer(scaffoldKey: _scaffoldKey,),
       ),
     );
   }

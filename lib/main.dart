@@ -7,6 +7,7 @@ import 'package:kids_tracking_app/Provider/data_provider.dart';
 import 'package:kids_tracking_app/Screens/home_screen.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:kids_tracking_app/Screens/map_screen.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 import 'package:provider/provider.dart';
 
@@ -148,6 +149,13 @@ class _MyAppState extends State<MyApp> {
             return ControllerScreen(
               initPageIndex: 1,
             );
+          }));
+        });
+      }
+     if (message.data['isSOS'] == 'true'){
+         Future.delayed(Duration.zero, () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return MapScreen(userEmail: message.data['senderEmail'],);
           }));
         });
       }
