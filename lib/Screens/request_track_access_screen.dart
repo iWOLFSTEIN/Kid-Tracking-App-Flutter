@@ -208,10 +208,12 @@ class _RequestTrackAccessScreenState extends State<RequestTrackAccessScreen> {
                                                   requestTo: i.id,
                                                 );
                                                await sendRequestTrackAccessNotification(
-                                                    name: firebaseAuth
+                                                    senderName: firebaseAuth
                                                         .currentUser!
                                                         .displayName,
-                                                    email: i.id);
+                                                    receiverEmail: i.id,
+                                                    senderEmail: firebaseAuth.currentUser!.email
+                                                    );
                                               },
                                               child: Text(
                                                 "Request",

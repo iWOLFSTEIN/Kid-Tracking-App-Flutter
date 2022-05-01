@@ -213,8 +213,11 @@ class _ConversationScreenState extends State<ConversationScreen> {
                           );
 
                           await sendMessageNotification(
-                              name: firebaseAuth.currentUser!.displayName,
-                              email: widget.conversationEmail);
+                              senderName: firebaseAuth.currentUser!.displayName,
+                              receiverEmail: widget.conversationEmail,
+                              senderEmail: firebaseAuth.currentUser!.email
+                              
+                              );
                         }
                         // print("message sent...");
                       }

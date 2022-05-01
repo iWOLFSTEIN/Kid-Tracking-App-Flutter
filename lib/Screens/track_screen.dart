@@ -42,7 +42,7 @@ class _TrackScreenState extends State<TrackScreen>
             child: Column(
               children: [
                 SizedBox(
-                  height: 15,
+                  height: 13,
                 ),
                 Container(
                   width: double.infinity,
@@ -74,7 +74,7 @@ class _TrackScreenState extends State<TrackScreen>
                   ),
                 ),
                 SizedBox(
-                  height: 15,
+                  height: 13,
                 ),
                 Container(
                   width: double.infinity,

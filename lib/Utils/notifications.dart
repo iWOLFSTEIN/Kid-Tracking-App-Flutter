@@ -1,41 +1,60 @@
 import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 
-sendRequestTrackAccessNotification({required name, required email}) async {
-    var receiverToken = await getDeviceTokenFromFirebase(userEmail: email);
+sendRequestTrackAccessNotification({required senderName, required receiverEmail, required senderEmail}) async {
+    var receiverToken = await getDeviceTokenFromFirebase(userEmail: receiverEmail);
     if (receiverToken == null) {
       print('Unable to send FCM message, no token exists.');
       return;
     }
     var fcmPayload = constructFCMPayload(receiverToken,
         title: "Track Request",
-        body: "$name sent you a track request",
-        data: {'isMessage': false});
+        body: "$senderName sent you a track request",
+        data: {'isMessage': false,  'senderEmail': senderEmail, 'isSOS': false});
 
     await sendPushMessage(fcmPayload: fcmPayload);
   }
 
-  sendAcceptedTrackRequestNotification({required name, required email}) async {
-    var receiverToken = await getDeviceTokenFromFirebase(userEmail: email);
+  sendAcceptedTrackRequestNotification({required senderName, required receiverEmail, required senderEmail}) async {
+    var receiverToken = await getDeviceTokenFromFirebase(userEmail: receiverEmail);
     if (receiverToken == null) {
       print('Unable to send FCM message, no token exists.');
       return;
     }
     var fcmPayload = constructFCMPayload(receiverToken,
         title: "Request Accepted",
-        body: "$name accepted your track request",
-        data: {'isMessage': false});
+        body: "$senderName accepted your track request",
+        data: {'isMessage': false, 'senderEmail': senderEmail, 'isSOS': false});
 
     await sendPushMessage(fcmPayload: fcmPayload);
   }
 
-  sendMessageNotification({required name, required email}) async {
-    var receiverToken = await getDeviceTokenFromFirebase(userEmail: email);
+
+
+sendSOSAlertNotification({required senderName, required receiverEmail, required senderEmail}) async {
+    var receiverToken = await getDeviceTokenFromFirebase(userEmail: receiverEmail);
     if (receiverToken == null) {
       print('Unable to send FCM message, no token exists.');
       return;
     }
     var fcmPayload = constructFCMPayload(receiverToken,
-        title: name, body: "sent you a message", data: {'isMessage': true});
+        title: "SOS Alert",
+        body: "$senderName sent you an SOS alert. Click to track them",
+        data: {'isMessage': false, 'senderEmail': senderEmail, 'isSOS': true});
+
+    await sendPushMessage(fcmPayload: fcmPayload);
+  }
+
+
+
+
+  sendMessageNotification({required senderName, required receiverEmail, required senderEmail}) async {
+    var receiverToken = await getDeviceTokenFromFirebase(userEmail: receiverEmail);
+    if (receiverToken == null) {
+      print('Unable to send FCM message, no token exists.');
+      return;
+    }
+    var fcmPayload = constructFCMPayload(receiverToken,
+        title: senderName, body: "sent you a message", data: {'isMessage': true, 'senderEmail': senderEmail, 'isSOS': false});
 
     await sendPushMessage(fcmPayload: fcmPayload);
   }

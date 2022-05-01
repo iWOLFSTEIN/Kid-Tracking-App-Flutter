@@ -150,9 +150,11 @@ class _RequestsScreenState extends State<RequestsScreen>
                                         requestFrom: i.id);
 
                                    await sendAcceptedTrackRequestNotification(
-                                        name: firebaseAuth
+                                        senderName: firebaseAuth
                                             .currentUser!.displayName,
-                                        email: i.id);
+                                        receiverEmail: i.id,
+                                        senderEmail: firebaseAuth.currentUser!.email
+                                        );
                                   },
                                   child: Text(
                                     "✓",
