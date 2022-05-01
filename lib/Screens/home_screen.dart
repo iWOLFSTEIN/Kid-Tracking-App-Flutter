@@ -1,12 +1,15 @@
+import 'package:badges/badges.dart';
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
+import 'package:kids_tracking_app/Provider/data_provider.dart';
 import 'package:kids_tracking_app/Screens/chats_screen.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:kids_tracking_app/Screens/map_screen.dart';
 import 'package:kids_tracking_app/Screens/track_screen.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_create_user_services.dart';
 import 'package:kids_tracking_app/Services/location_services.dart';
+import 'package:provider/provider.dart';
 
 class ControllerScreen extends StatefulWidget {
   ControllerScreen({Key? key}) : super(key: key);
@@ -35,6 +38,8 @@ class _ControllerScreenState extends State<ControllerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var dataProvider = Provider.of<DataProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: PageView(
@@ -44,6 +49,9 @@ class _ControllerScreenState extends State<ControllerScreen> {
           setState(() {
             pageIndex = index;
           });
+          // if (index == 1) {
+            dataProvider.isMessageReceived = false;
+          // }
         },
         children: [TrackScreen(), ChatsScreen()],
       ),
@@ -64,7 +72,26 @@ class _ControllerScreenState extends State<ControllerScreen> {
           items: [
             CustomNavigationBarItem(icon: Icon(Icons.map)),
             CustomNavigationBarItem(
-              icon: Icon(Icons.chat_bubble),
+              // showBadge: dataProvider.isMessageReceived,
+              // badgeCount: 1,
+              icon:
+                  //  (pageIndex == 1)
+                  //     ? Icon(Icons.chat_bubble)
+                  //     :
+
+                  (dataProvider.isMessageReceived)
+                      ? Padding(
+                          padding: const EdgeInsets.only(right: 5, bottom: 29),
+                          child: Badge(
+                              badgeColor: Colors.green.shade200,
+                              position: BadgePosition.bottomEnd(),
+                              badgeContent: Container(
+                                height: 1,
+                                width: 1,
+                              ),
+                              child: Icon(Icons.chat_bubble)),
+                        )
+                      : Icon(Icons.chat_bubble),
             )
           ]),
     );

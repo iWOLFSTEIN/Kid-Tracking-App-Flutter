@@ -4,12 +4,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
+import 'package:kids_tracking_app/Provider/data_provider.dart';
 import 'package:kids_tracking_app/Screens/all_chat_users_screen.dart';
 import 'package:kids_tracking_app/Screens/conversation_screen.dart';
 import 'package:kids_tracking_app/Utils/alerts.dart';
 import 'package:kids_tracking_app/Widgets/app_drawer.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:multiple_stream_builder/multiple_stream_builder.dart';
+import 'package:provider/provider.dart';
 
 import '../Utils/dimensions.dart';
 // import '../Widgets/chat_element.dart';
@@ -26,7 +28,16 @@ class _ChatsScreenState extends State<ChatsScreen>
   final animatedListStateKey = GlobalKey<AnimatedListState>();
   bool isDeletingAllChats = false;
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // Future.delayed(Duration.zero, () {});
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // var dataProvider = Provider.of<DataProvider>(context);
+    // dataProvider.isMessageReceived = false;
     return ModalProgressHUD(
       inAsyncCall: isDeletingAllChats,
       progressIndicator: Column(
@@ -170,36 +181,38 @@ class _ChatsScreenState extends State<ChatsScreen>
                         Padding(
                       padding:
                           EdgeInsets.symmetric(horizontal: 13, vertical: 4),
-                      child: StreamBuilder2<DocumentSnapshot, DocumentSnapshot>(
-                          streams: Tuple2(
-                            // firebaseFirestore
-                            //     .collection('Messages')
-                            //     .doc(firebaseAuth.currentUser!.email)
-                            //     .collection('AllMessages')
-                            //     .doc(i.id)
-                            //     .snapshots(),
-                            firebaseFirestore
-                                .collection("Users")
-                                .doc(i.id)
-                                .snapshots(),
+                      child: StreamBuilder<
+                              // DocumentSnapshot,
+                              DocumentSnapshot>(
+                          stream:
+                              //  Tuple2(
+                              // firebaseFirestore
+                              //     .collection('Messages')
+                              //     .doc(firebaseAuth.currentUser!.email)
+                              //     .collection('AllMessages')
+                              //     .doc(i.id)
+                              //     .snapshots(),
+                              firebaseFirestore
+                                  .collection("Users")
+                                  .doc(i.id)
+                                  .snapshots(),
 
-                            firebaseFirestore
-                                .collection('LastMessage')
-                                .doc(firebaseAuth.currentUser!.email)
-                                .collection('AllChatsLastMessages')
-                                .doc(documentSnapshotAllMessages["sentTo"])
-                                .snapshots(),
-                          ),
+                          // firebaseFirestore
+                          //     .collection('LastMessage')
+                          //     .doc(firebaseAuth.currentUser!.email)
+                          //     .collection('AllChatsLastMessages')
+                          //     .doc(documentSnapshotAllMessages["sentTo"])
+                          //     .snapshots(),
+                          // ),
                           builder: (context, snapshot) {
-                            if (!snapshot.item1.hasData ||
-                                !snapshot.item2.hasData) {
+                            if (!snapshot.hasData) {
                               return Container();
                             }
 
-                            var documentSnapshot1 =
-                                snapshot.item2.data!.data() as Map;
+                            // var documentSnapshot1 =
+                            //     snapshot.item2.data!.data() as Map;
                             var documentSnapshot2 =
-                                snapshot.item1.data!.data() as Map;
+                                snapshot.data!.data() as Map;
 
                             return ListTile(
                                 onTap: () {
@@ -227,30 +240,48 @@ class _ChatsScreenState extends State<ChatsScreen>
                                   documentSnapshotAllMessages["lastMessage"],
                                   overflow: TextOverflow.ellipsis,
                                 ),
-                                trailing: Opacity(
-                                  opacity: (snapshot.item2.data!.data() == null)
-                                      ? 1.0
-                                      : (documentSnapshot1['lastMessage']
-                                                  .compareTo(
-                                                      documentSnapshotAllMessages[
-                                                          'lastMessage']) !=
-                                              0)
-                                          ? 1.0
-                                          : 0.0,
-                                  child: CircleAvatar(
-                                    backgroundColor: Colors.green.shade200,
-                                    radius: 8,
-                                    child: Center(
-                                      child: Text(
-                                        '1',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 12,
+                                trailing: StreamBuilder<DocumentSnapshot>(
+                                    stream: firebaseFirestore
+                                        .collection('LastMessage')
+                                        .doc(firebaseAuth.currentUser!.email)
+                                        .collection('AllChatsLastMessages')
+                                        .doc(documentSnapshotAllMessages[
+                                            "sentTo"])
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return Container(
+                                          width: 1,
+                                        );
+                                      }
+                                      var documentSnapshot1 =
+                                          snapshot.data!.data() as Map;
+                                      return Opacity(
+                                        opacity: (snapshot.data!.data() == null)
+                                            ? 1.0
+                                            : (documentSnapshot1['lastMessage']
+                                                        .compareTo(
+                                                            documentSnapshotAllMessages[
+                                                                'lastMessage']) !=
+                                                    0)
+                                                ? 1.0
+                                                : 0.0,
+                                        child: CircleAvatar(
+                                          backgroundColor:
+                                              Colors.green.shade200,
+                                          radius: 8,
+                                          child: Center(
+                                            child: Text(
+                                              '1',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
-                                ));
+                                      );
+                                    }));
                           }),
                     );
                     // });

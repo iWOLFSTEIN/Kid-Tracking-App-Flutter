@@ -51,6 +51,8 @@ dependencies:
   firebase_messaging: ^11.2.14
   flutter_local_notifications: ^9.4.1
   http: ^0.13.4
+  provider: ^6.0.2
+  badges: ^2.0.2
   # flutter_background_service: ^2.0.0
 
 dev_dependencies:

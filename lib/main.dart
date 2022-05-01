@@ -1,22 +1,14 @@
-// import 'dart:async';
-
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-// import 'package:flutter_background_service/flutter_background_service.dart';
-// import 'package:google_fonts/google_fonts.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
+import 'package:kids_tracking_app/Provider/data_provider.dart';
 import 'package:kids_tracking_app/Screens/home_screen.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
-// import 'package:kids_tracking_app/Services/location_services.dart';
-// import 'package:kids_tracking_app/Services/permission_handler.dart';
-// import 'package:location/location.dart';
-// import 'package:permission_handler/permission_handler.dart';
-// import 'package:location/location.dart' as loc;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
+import 'package:provider/provider.dart';
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   // If you're going to use other Firebase services in the background, such as Firestore,
@@ -34,7 +26,6 @@ FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  // await initializeBackgroundServices();
 
   // Set the background messaging handler early on, as a named top-level function
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -54,88 +45,77 @@ void main() async {
         ?.createNotificationChannel(channel!);
   }
 
-  runApp(const MyApp());
+  runApp(const InitApp());
 }
 
 FirebaseMessaging messaging = FirebaseMessaging.instance;
 
-// initializeBackgroundServices() async {
-//   FlutterBackgroundService flutterBackgroundService = FlutterBackgroundService();
-
-//   await flutterBackgroundService.configure(
-//       androidConfiguration:
-//           AndroidConfiguration(onStart: onStart, isForegroundMode: false),
-//       iosConfiguration: IosConfiguration(
-//           onForeground: onStart,
-//           onBackground: (serviceInstance) async {
-//             return true;
-//           }));
-
-//   await flutterBackgroundService.startService();
-// }
-
-// onStart(service) async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   await Firebase.initializeApp();
-
-// }
-// getLocationData(){
-//   Timer.periodic(Duration(milliseconds: 300), (timer) async {
-//      var locationData =await getLocation();
-
-//    if(locationData != null)
-//     try {
-//                 await firebaseFirestore
-//                     .collection("Coordinates")
-//                     .doc("usercoordinates")
-//                     .set({"latitude":locationData.lat,
-//                       "longitude": locationData.long,
-//                     });
-//               } catch (e) {
-//                 print("generating error..");
-//                 print(e.toString());
-//               }
-//   });
-// }
-
-onForegroundNotification() {
-//  FirebaseMessaging.instance
-//         .getInitialMessage()
-//         .then((RemoteMessage? message) {
-//       print("payload received");
-//       if (message != null) {}
-//     });
+onForegroundNotification(context) {
+  // FirebaseMessaging.instance.getInitialMessage().then((RemoteMessage? message) {
+  //   print("payload received");
+  //   if (message != null) {
+  //     if (message.data['isMessage'] == 'true'){
+  //       Future.delayed(Duration.zero, () {
+  //       var dataProvider = Provider.of<DataProvider>(context, listen: false);
+  //       dataProvider.isMessageReceived = true;
+  //     });
+  //     }
+  //   }
+  // });
   try {
     var initialzationSettingsAndroid =
-        AndroidInitializationSettings(
-          'ic_launcher'
-          // '@mipmap/ic_launcher'
-          );
+        AndroidInitializationSettings('ic_launcher'
+            // '@mipmap/ic_launcher'
+            );
     var initializationSettings =
         InitializationSettings(android: initialzationSettingsAndroid);
 
     flutterLocalNotificationsPlugin!.initialize(initializationSettings);
     FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      // print(message.data['isMessage']);
       print("payload received");
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null && !kIsWeb) {
-        flutterLocalNotificationsPlugin!.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel!.id,
-                channel!.name,
-                icon: 'ic_launcher',
-              ),
-            ));
+      if (!(message.data['isMessage'] == 'true')) {
+        RemoteNotification? notification = message.notification;
+        AndroidNotification? android = message.notification?.android;
+        if (notification != null && android != null && !kIsWeb) {
+          flutterLocalNotificationsPlugin!.show(
+              notification.hashCode,
+              notification.title,
+              notification.body,
+              NotificationDetails(
+                android: AndroidNotificationDetails(
+                  channel!.id,
+                  channel!.name,
+                  icon: 'ic_launcher',
+                ),
+              ));
+        }
+      } else {
+        Future.delayed(Duration.zero, () {
+          var dataProvider = Provider.of<DataProvider>(context, listen: false);
+          dataProvider.isMessageReceived = true;
+        });
       }
     });
   } catch (e) {
     print("generating error in onForegroundNotification Method");
     print(e.toString());
+  }
+}
+
+class InitApp extends StatefulWidget {
+  const InitApp({Key? key}) : super(key: key);
+
+  @override
+  State<InitApp> createState() => _InitAppState();
+}
+
+class _InitAppState extends State<InitApp> {
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(providers: [
+      ChangeNotifierProvider(create: (context) => DataProvider()),
+    ], child: MyApp());
   }
 }
 
@@ -151,7 +131,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    onForegroundNotification();
+    onForegroundNotification(context);
     uploadDeviceTokenToFirebase();
   }
 

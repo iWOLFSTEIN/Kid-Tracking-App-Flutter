@@ -21,6 +21,7 @@ class _TrackScreenState extends State<TrackScreen>
   // TODO: implement wantKeepAlive
   bool get wantKeepAlive => true;
   var textStyle = TextStyle();
+  String searchText = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,6 +51,11 @@ class _TrackScreenState extends State<TrackScreen>
                       borderRadius: BorderRadius.circular(50)),
                   child: TextField(
                     style: textStyle.copyWith(color: Colors.black),
+                    onChanged: (value) {
+                      setState(() {
+                        searchText = value;
+                      });
+                    },
                     autocorrect: false,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -77,19 +83,10 @@ class _TrackScreenState extends State<TrackScreen>
                       borderRadius: BorderRadius.all(Radius.circular(10))),
                   child: TextButton(
                       onPressed: () async {
-                        // Navigator.push(context,
-                        //     MaterialPageRoute(builder: (context) {
-                        //   return RequestTrackAccessScreen();
-                        // }));
-                        //  await onActionSelected("subscribe");
-                        var receiverToken = await getDeviceTokenFromFirebase(
-                            userEmail: firebaseAuth.currentUser!.email
-                            // userEmail: "idamiengrey@gmail.com"
-                            // userEmail: "ikenprime@gmail.com"
-
-                            );
-
-                        await sendPushMessage(receiverToken: receiverToken);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) {
+                          return RequestTrackAccessScreen();
+                        }));
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(
@@ -151,6 +148,7 @@ class _TrackScreenState extends State<TrackScreen>
                           continue;
                         }
                         if (userEmail != null) {
+                          // if (searchText == '') {
                           var widget = ListTile(
                             onTap: () {
                               Navigator.push(context,
@@ -187,7 +185,15 @@ class _TrackScreenState extends State<TrackScreen>
                                 }),
                             trailing: Icon(Icons.location_on_outlined),
                           );
-                          widgetList.add(widget);
+                          if (searchText == '') {
+                            widgetList.add(widget);
+                          } else {
+                            if (documentSnapshot["email"]
+                                    .contains(searchText) ||
+                                documentSnapshot["name"].contains(searchText)) {
+                              widgetList.add(widget);
+                            }
+                          }
                         }
                       }
                       if (listEquals(widgetList, [])) {

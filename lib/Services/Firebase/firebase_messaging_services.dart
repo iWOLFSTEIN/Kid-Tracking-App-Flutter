@@ -48,28 +48,22 @@ getDeviceTokenFromFirebase({required userEmail}) async {
 }
 
 /// The API endpoint here accepts a raw FCM payload for demonstration purposes.
-String constructFCMPayload(String? token) {
+String constructFCMPayload(String? token,
+    {required title, required body, required data}) {
   return jsonEncode({
     'to': '$token',
-    'data': {},
+    'data': data,
     'notification': {
-      'title': 'Hello FlutterFire!',
-      'body': 'This notification was created via FCM!',
+      'title': title,
+      'body': body,
     },
   });
 }
 
-Future<void> sendPushMessage({receiverToken}) async {
+Future<void> sendPushMessage(
+    {required fcmPayload}) async {
   var serverKey =
       "AAAAdZzW1U0:APA91bHy5FkmgKd94ltgu88W2R4msBteT_MiVgOouyxb32cN10O4OOU9POxIZpbebD1CkGv9bH4FUHg6FXVXfiwJSJp2YiCHL4nmnH0cjJFrFiXfiwOYWjUE_1jD-zKQkYZOH_PdV6QG";
-  var senderId = 505142498637;
-
-  var apiKey = "AIzaSyBqw4gB-p_CONDecK2hyQ8v96Dfl2_ekRs";
-
-  if (receiverToken == null) {
-    print('Unable to send FCM message, no token exists.');
-    return;
-  }
 
 // 'https://fcm.googleapis.com/fcm/send';
 
@@ -80,7 +74,7 @@ Future<void> sendPushMessage({receiverToken}) async {
         'Content-Type': 'application/json; charset=UTF-8',
         'Authorization': 'key=$serverKey',
       },
-      body: constructFCMPayload(receiverToken),
+      body: fcmPayload,
     );
 
     print(response.body);
