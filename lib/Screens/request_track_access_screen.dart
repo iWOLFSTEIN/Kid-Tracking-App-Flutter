@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
+import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_request_access_related_services.dart';
 
 class RequestTrackAccessScreen extends StatefulWidget {
@@ -16,6 +17,21 @@ class RequestTrackAccessScreen extends StatefulWidget {
 class _RequestTrackAccessScreenState extends State<RequestTrackAccessScreen> {
   TextStyle textStyle = TextStyle();
   String searchText = "";
+
+  sendRequestTrackAccessNotification({required name, required email}) async {
+    var receiverToken = await getDeviceTokenFromFirebase(userEmail: email);
+    if (receiverToken == null) {
+      print('Unable to send FCM message, no token exists.');
+      return;
+    }
+    var fcmPayload = constructFCMPayload(receiverToken,
+        title: "Track Request",
+        body: "$name sent you a track request",
+        data: {'isMessage': false});
+
+    await sendPushMessage(fcmPayload: fcmPayload);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -202,7 +218,11 @@ class _RequestTrackAccessScreenState extends State<RequestTrackAccessScreen> {
                                                 await requestAccess(
                                                   requestTo: i.id,
                                                 );
-                                                // setState(() {});
+                                               await sendRequestTrackAccessNotification(
+                                                    name: firebaseAuth
+                                                        .currentUser!
+                                                        .displayName,
+                                                    email: i.id);
                                               },
                                               child: Text(
                                                 "Request",

@@ -12,20 +12,23 @@ import 'package:kids_tracking_app/Services/location_services.dart';
 import 'package:provider/provider.dart';
 
 class ControllerScreen extends StatefulWidget {
-  ControllerScreen({Key? key}) : super(key: key);
+  ControllerScreen({Key? key, this.initPageIndex = 0}) : super(key: key);
+
+  var initPageIndex;
 
   @override
   _ControllerScreenState createState() => _ControllerScreenState();
 }
 
 class _ControllerScreenState extends State<ControllerScreen> {
-  final PageController controller = PageController(initialPage: 0);
-  var pageIndex = 0;
+  late PageController controller;
+  var pageIndex =0;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    controller = PageController(initialPage:widget.initPageIndex);
     // getLocation();
   }
 
@@ -50,7 +53,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
             pageIndex = index;
           });
           // if (index == 1) {
-            dataProvider.isMessageReceived = false;
+          dataProvider.isMessageReceived = false;
           // }
         },
         children: [TrackScreen(), ChatsScreen()],

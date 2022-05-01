@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
+import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_request_access_related_services.dart';
 
 class RequestsScreen extends StatefulWidget {
@@ -21,6 +22,20 @@ class _RequestsScreenState extends State<RequestsScreen>
     // TODO: implement initState
     super.initState();
     tabController = TabController(length: 2, vsync: this);
+  }
+
+  sendAcceptedTrackRequestNotification({required name, required email}) async {
+    var receiverToken = await getDeviceTokenFromFirebase(userEmail: email);
+    if (receiverToken == null) {
+      print('Unable to send FCM message, no token exists.');
+      return;
+    }
+    var fcmPayload = constructFCMPayload(receiverToken,
+        title: "Request Accepted",
+        body: "$name accepted your track request",
+        data: {'isMessage': false});
+
+    await sendPushMessage(fcmPayload: fcmPayload);
   }
 
   @override
@@ -144,6 +159,11 @@ class _RequestsScreenState extends State<RequestsScreen>
                                     await acceptRequest(requestFrom: i.id);
                                     await addToRequestSendersTrackingCollection(
                                         requestFrom: i.id);
+
+                                   await sendAcceptedTrackRequestNotification(
+                                        name: firebaseAuth
+                                            .currentUser!.displayName,
+                                        email: i.id);
                                   },
                                   child: Text(
                                     "✓",

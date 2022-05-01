@@ -115,7 +115,14 @@ class _InitAppState extends State<InitApp> {
   Widget build(BuildContext context) {
     return MultiProvider(providers: [
       ChangeNotifierProvider(create: (context) => DataProvider()),
-    ], child: MyApp());
+    ], child: MaterialApp(
+      
+       debugShowCheckedModeBanner: false,
+      title: 'Kid Tracking App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: MyApp()));
   }
 }
 
@@ -132,21 +139,38 @@ class _MyAppState extends State<MyApp> {
     // TODO: implement initState
     super.initState();
     onForegroundNotification(context);
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+      if (message.data['isMessage'] == 'true') {
+        Future.delayed(Duration.zero, () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return ControllerScreen(
+              initPageIndex: 1,
+            );
+          }));
+        });
+      }
+    });
+
     uploadDeviceTokenToFirebase();
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // textTheme: GoogleFonts.montserratTextTheme(Theme.of(context).textTheme),
-        primarySwatch: Colors.blue,
-      ),
-      home: (firebaseAuth.currentUser != null)
+    return 
+    // MaterialApp(
+    //   debugShowCheckedModeBanner: false,
+    //   title: 'Flutter Demo',
+    //   theme: ThemeData(
+    //     primarySwatch: Colors.blue,
+    //   ),
+    //   home: 
+      (firebaseAuth.currentUser != null)
           ? ControllerScreen()
-          : LoginScreen(),
-    );
+          : LoginScreen()
+    //       ,
+    // )
+    ;
   }
 }
