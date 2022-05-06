@@ -1,9 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:kids_tracking_app/Screens/requests_screen.dart';
+import 'package:kids_tracking_app/Screens/sos_receivers_screen.dart';
 import 'package:kids_tracking_app/Screens/tracking_users_screen.dart';
 import 'package:kids_tracking_app/Utils/alerts.dart';
 import 'package:kids_tracking_app/Utils/notifications.dart';
@@ -178,24 +180,45 @@ class AppDrawer extends StatelessWidget {
 
               try {
                 await firebaseFirestore
-                    .collection('AccessRequests')
+                    .collection('SOSReceivers')
                     .doc(firebaseAuth.currentUser!.email)
-                    .collection('Requests')
-                    .where('isAccessGranted', isEqualTo: true)
+                    .collection('Receivers')
                     .get()
                     .then((value) async {
-                  for (var i in value.docs) {
-                    await sendSOSAlertNotification(
-                        senderName: firebaseAuth.currentUser!.displayName,
-                        receiverEmail: i.id,
-                        senderEmail: firebaseAuth.currentUser!.email);
+                  if (!(listEquals(value.docs, []))) {
+                    for (var i in value.docs) {
+                      print(i.id);
+                      await sendSOSAlertNotification(
+                          senderName: firebaseAuth.currentUser!.displayName,
+                          receiverEmail: i.id,
+                          senderEmail: firebaseAuth.currentUser!.email);
+                    }
+                    successAlert(scaffoldKey.currentContext);
+                  } else {
+                    warningAlert(scaffoldKey.currentContext,
+                        message: "You don't have any SOS alert receivers.");
                   }
                 });
-                successAlert(scaffoldKey.currentContext);
               } catch (e) {
                 print('generating error while sending sos alert');
                 print(e.toString());
               }
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.call_received,
+              color: Colors.black,
+            ),
+            title: Text(
+              "SOS Alert Receivers",
+              style: TextStyle(fontSize: 17, color: Colors.black),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return SOSReceiversScreen();
+              }));
             },
           ),
           ListTile(
