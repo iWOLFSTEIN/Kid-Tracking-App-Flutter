@@ -92,10 +92,10 @@ onForegroundNotification(context) {
               ));
         }
       } else {
-        Future.delayed(Duration.zero, () {
-          var dataProvider = Provider.of<DataProvider>(context, listen: false);
-          dataProvider.isMessageReceived = true;
-        });
+        // Future.delayed(Duration.zero, () {
+        //   var dataProvider = Provider.of<DataProvider>(context, listen: false);
+        //   dataProvider.isMessageReceived = true;
+        // });
       }
     });
   } catch (e) {
@@ -119,7 +119,7 @@ class _InitAppState extends State<InitApp> {
     ], child: MaterialApp(
       
        debugShowCheckedModeBanner: false,
-      title: 'Kid Tracking App',
+      title: 'Dway',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

@@ -38,7 +38,7 @@ sendSOSAlertNotification({required senderName, required receiverEmail, required 
     }
     var fcmPayload = constructFCMPayload(receiverToken,
         title: "SOS Alert",
-        body: "$senderName sent you an SOS alert. Click to track them",
+        body: "$senderName sent you an SOS alert. Click to track them.",
         data: {'isMessage': false, 'senderEmail': senderEmail, 'isSOS': true});
 
     await sendPushMessage(fcmPayload: fcmPayload);

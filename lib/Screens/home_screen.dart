@@ -29,7 +29,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
     // TODO: implement initState
     super.initState();
     controller = PageController(initialPage:widget.initPageIndex);
-    // getLocation();
+    getLocation();
   }
 
   @override
@@ -41,7 +41,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
 
   @override
   Widget build(BuildContext context) {
-    var dataProvider = Provider.of<DataProvider>(context);
+    // var dataProvider = Provider.of<DataProvider>(context);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -53,7 +53,7 @@ class _ControllerScreenState extends State<ControllerScreen> {
             pageIndex = index;
           });
           // if (index == 1) {
-          dataProvider.isMessageReceived = false;
+          // dataProvider.isMessageReceived = false;
           // }
         },
         children: [TrackScreen(), ChatsScreen()],
@@ -82,19 +82,20 @@ class _ControllerScreenState extends State<ControllerScreen> {
                   //     ? Icon(Icons.chat_bubble)
                   //     :
 
-                  (dataProvider.isMessageReceived)
-                      ? Padding(
-                          padding: const EdgeInsets.only(right: 5, bottom: 29),
-                          child: Badge(
-                              badgeColor: Colors.green.shade200,
-                              position: BadgePosition.bottomEnd(),
-                              badgeContent: Container(
-                                height: 1,
-                                width: 1,
-                              ),
-                              child: Icon(Icons.chat_bubble)),
-                        )
-                      : Icon(Icons.chat_bubble),
+                  // (dataProvider.isMessageReceived)
+                  //     ? Padding(
+                  //         padding: const EdgeInsets.only(right: 5, bottom: 29),
+                  //         child: Badge(
+                  //             badgeColor: Colors.green.shade200,
+                  //             position: BadgePosition.bottomEnd(),
+                  //             badgeContent: Container(
+                  //               height: 1,
+                  //               width: 1,
+                  //             ),
+                  //             child: Icon(Icons.chat_bubble)),
+                  //       )
+                  //     : 
+                      Icon(Icons.chat_bubble),
             )
           ]),
     );

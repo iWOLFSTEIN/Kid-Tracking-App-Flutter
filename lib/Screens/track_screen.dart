@@ -16,13 +16,14 @@ class TrackScreen extends StatefulWidget {
 }
 
 class _TrackScreenState extends State<TrackScreen>
-    with AutomaticKeepAliveClientMixin<TrackScreen> {
+    // with AutomaticKeepAliveClientMixin<TrackScreen>
+     {
    final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
  
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+  // @override
+  // // TODO: implement wantKeepAlive
+  // bool get wantKeepAlive => true;
   var textStyle = TextStyle();
   String searchText = '';
   @override

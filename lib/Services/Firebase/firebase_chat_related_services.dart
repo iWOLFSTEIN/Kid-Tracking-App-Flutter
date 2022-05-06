@@ -136,3 +136,43 @@ class FirebaseChatRelatedServices {
     }
   }
 }
+
+deleteUserChat({required userEmail}) async {
+  try {
+    await firebaseFirestore
+        .collection('Messages')
+        .doc(firebaseAuth.currentUser!.email)
+        .collection('AllMessages')
+        .doc(userEmail)
+        .collection('Conversation')
+        .get()
+        .then((snapshot) {
+      for (DocumentSnapshot ds in snapshot.docs) {
+        ds.reference.delete();
+      }
+    });
+
+    await firebaseFirestore
+        .collection('LastMessage')
+        .doc(firebaseAuth.currentUser!.email)
+        .collection('AllChatsLastMessages')
+        .doc(userEmail)
+        .get()
+        .then((snapshot) {
+      if (snapshot.exists) snapshot.reference.delete();
+    }).whenComplete(() async {
+      await firebaseFirestore
+          .collection('Messages')
+          .doc(firebaseAuth.currentUser!.email)
+          .collection('AllMessages')
+          .doc(userEmail)
+          .get()
+          .then((snapshot) {
+        if (snapshot.exists) snapshot.reference.delete();
+      });
+    });
+  } catch (e) {
+    print("Error is occurred in deleteUserChat method");
+    print(e.toString());
+  }
+}
