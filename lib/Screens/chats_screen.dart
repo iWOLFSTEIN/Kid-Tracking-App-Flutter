@@ -165,13 +165,15 @@ class _ChatsScreenState extends State<ChatsScreen>
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
                   return Container(
+                    padding:
+                        EdgeInsets.only(bottom: height(context) * 15 / 100),
+                    height: height(context),
                     child: Center(
-                        child: Text(
-                      'Loading chats...',
-                      style: TextStyle(
-                        color: Colors.black.withOpacity(0.4),
+                      child: Text(
+                        'Loading chats...',
+                        style: TextStyle(color: Colors.black.withOpacity(0.4)),
                       ),
-                    )),
+                    ),
                   );
                 }
 
