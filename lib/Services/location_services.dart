@@ -11,7 +11,7 @@ getLocation() async {
   try {
     isPermissionGranted = await getPermission(Permission.location);
     location.changeSettings(
-        interval: 10000, accuracy: loc.LocationAccuracy.high);
+        interval: 1000, accuracy: loc.LocationAccuracy.high);
   } catch (e) {
     print("generating error from getLocation method");
     print(e);
