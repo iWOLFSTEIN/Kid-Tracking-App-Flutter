@@ -55,3 +55,18 @@ Future<bool> enableBackgroundMode() async {
     return _bgModeEnabled;
   }
 }
+
+Future<bool> isLocationEnabled() async {
+  bool _bgModeEnabled = false;
+  try {
+    _bgModeEnabled = await Permission.location.isGranted;
+  } catch (e) {
+    print(e.toString());
+  }
+  try {
+    _bgModeEnabled = await Permission.location.isGranted;
+  } catch (e) {
+    print(e.toString());
+  }
+  return _bgModeEnabled;
+}

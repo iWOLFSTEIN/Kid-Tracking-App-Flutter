@@ -2,10 +2,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:kids_tracking_app/Screens/prominent_disclosure_screen.dart';
+import 'package:kids_tracking_app/Services/location_services.dart';
 import 'package:kids_tracking_app/Utils/dimensions.dart';
 import 'package:kids_tracking_app/Screens/home_screen.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
 import 'package:kids_tracking_app/Utils/alerts.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -76,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     Text("Welcome to", style: heading_style),
                     Text(
-                      "Child Tracking App",
+                      "D-Way Locator",
                       style: heading_style,
                     )
                   ],
@@ -93,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
               Wrap(
                 children: [
                   Text(
-                    "Child Tracking App allows you to track your kids on the Google Map. Parents can track their kids and see their realtime locations. Kids can chat to parents and send an SOS alert in case of emergency.",
+                    "A tracking app that allows you to track family and friends.",
                     style:
                         // GoogleFonts.montserrat(
                         //   textStyle:
@@ -113,10 +116,19 @@ class _LoginScreenState extends State<LoginScreen> {
                             await googleSignInServices.signInWithGoogle();
 
                         if (user != null) {
-                          Navigator.pushAndRemoveUntil(context,
-                              MaterialPageRoute(builder: (context) {
-                            return ControllerScreen();
-                          }), (route) => false);
+                          var isLocationPermissionGranted =
+                              await isLocationEnabled();
+                          if (isLocationPermissionGranted) {
+                            Navigator.pushAndRemoveUntil(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ControllerScreen();
+                            }), (route) => false);
+                          } else {
+                            Navigator.pushAndRemoveUntil(context,
+                                MaterialPageRoute(builder: (context) {
+                              return ProminentDisclosureScreen();
+                            }), (route) => false);
+                          }
                         }
                       } catch (e) {
                         print(e.toString());

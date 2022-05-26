@@ -8,6 +8,7 @@ import 'package:kids_tracking_app/Screens/home_screen.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:kids_tracking_app/Screens/map_screen.dart';
+import 'package:kids_tracking_app/Screens/prominent_disclosure_screen.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 import 'package:provider/provider.dart';
 
@@ -114,16 +115,17 @@ class InitApp extends StatefulWidget {
 class _InitAppState extends State<InitApp> {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(providers: [
-      ChangeNotifierProvider(create: (context) => DataProvider()),
-    ], child: MaterialApp(
-      
-       debugShowCheckedModeBanner: false,
-      title: 'Dway',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyApp()));
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (context) => DataProvider()),
+        ],
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'D-Way Locator',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: MyApp()));
   }
 }
 
@@ -152,10 +154,12 @@ class _MyAppState extends State<MyApp> {
           }));
         });
       }
-     if (message.data['isSOS'] == 'true'){
-         Future.delayed(Duration.zero, () {
+      if (message.data['isSOS'] == 'true') {
+        Future.delayed(Duration.zero, () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return MapScreen(userEmail: message.data['senderEmail'],);
+            return MapScreen(
+              userEmail: message.data['senderEmail'],
+            );
           }));
         });
       }
@@ -166,19 +170,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    // MaterialApp(
-    //   debugShowCheckedModeBanner: false,
-    //   title: 'Flutter Demo',
-    //   theme: ThemeData(
-    //     primarySwatch: Colors.blue,
-    //   ),
-    //   home: 
-      (firebaseAuth.currentUser != null)
-          ? ControllerScreen()
-          : LoginScreen()
-    //       ,
-    // )
-    ;
+    return
+        // MaterialApp(
+        //   debugShowCheckedModeBanner: false,
+        //   title: 'Flutter Demo',
+        //   theme: ThemeData(
+        //     primarySwatch: Colors.blue,
+        //   ),
+        //   home:
+        (firebaseAuth.currentUser != null) ? ControllerScreen() : LoginScreen()
+        // ProminentDisclosureScreen()
+        //       ,
+        // )
+        ;
   }
 }
