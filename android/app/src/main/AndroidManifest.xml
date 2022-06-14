@@ -43,4 +43,10 @@
              <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyCYH84V2p5RCYBnpiLYFu87U3UIFtvxKRg"/>
     </application>
+    <queries>
+    <intent>
+      <action android:name="android.intent.action.SENDTO" />
+      <data android:scheme="mailto" />
+    </intent>
+  </queries>
 </manifest>

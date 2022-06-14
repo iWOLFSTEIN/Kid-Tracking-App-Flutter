@@ -8,7 +8,6 @@ import 'package:kids_tracking_app/Screens/home_screen.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:kids_tracking_app/Screens/map_screen.dart';
-import 'package:kids_tracking_app/Screens/prominent_disclosure_screen.dart';
 import 'package:kids_tracking_app/Services/Firebase/firebase_messaging_services.dart';
 import 'package:provider/provider.dart';
 

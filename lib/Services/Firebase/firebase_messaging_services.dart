@@ -9,7 +9,7 @@ import 'package:kids_tracking_app/Constants/network_objects.dart';
 uploadDeviceTokenToFirebase({userEmail}) async {
   try {
     String? token = await FirebaseMessaging.instance.getToken();
-
+    print(userEmail);
     if (token != null) if (userEmail == null) {
       await firebaseFirestore
           .collection("DeviceToken")
@@ -60,8 +60,7 @@ String constructFCMPayload(String? token,
   });
 }
 
-Future<void> sendPushMessage(
-    {required fcmPayload}) async {
+Future<void> sendPushMessage({required fcmPayload}) async {
   var serverKey =
       "AAAAdZzW1U0:APA91bHy5FkmgKd94ltgu88W2R4msBteT_MiVgOouyxb32cN10O4OOU9POxIZpbebD1CkGv9bH4FUHg6FXVXfiwJSJp2YiCHL4nmnH0cjJFrFiXfiwOYWjUE_1jD-zKQkYZOH_PdV6QG";
 

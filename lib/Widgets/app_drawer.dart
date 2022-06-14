@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:kids_tracking_app/Constants/network_objects.dart';
+import 'package:kids_tracking_app/Screens/contact_support_screen.dart';
 import 'package:kids_tracking_app/Screens/login_screen.dart';
 import 'package:kids_tracking_app/Screens/requests_screen.dart';
 import 'package:kids_tracking_app/Screens/sos_receivers_screen.dart';
@@ -259,6 +260,22 @@ class AppDrawer extends StatelessWidget {
               height: 0.5,
               color: Colors.black.withOpacity(0.4),
             ),
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.contact_support_outlined,
+              color: Colors.black,
+            ),
+            title: Text(
+              "Contact Support",
+              style: TextStyle(fontSize: 17, color: Colors.black),
+            ),
+            onTap: () async {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return ContactSupportScreen();
+              }));
+            },
           ),
           ListTile(
             leading: Icon(
